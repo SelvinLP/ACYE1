@@ -1,0 +1,89 @@
+\hypertarget{game_8h}{}\doxysection{game.\+h File Reference}
+\label{game_8h}\index{game.h@{game.h}}
+
+
+Funciones para hacer mover a los jugadores y la pelota, pausar, reanudar y terminar el juego.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{game_8h_a80c28f5160531f6d1bce36f66832c3e4}\label{game_8h_a80c28f5160531f6d1bce36f66832c3e4}} 
+void \mbox{\hyperlink{game_8h_a80c28f5160531f6d1bce36f66832c3e4}{setup\+\_\+game}} ()
+\begin{DoxyCompactList}\small\item\em setup\+\_\+game Se ejecuta para inicializar todas las variables y pines necesarios el juego. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{game_8h_aa99f06ead5638790aff85daffcd9a1dc}{imprimir\+\_\+tablero}} (int pos\+\_\+x, int pos\+\_\+y, byte player, byte player2)
+\begin{DoxyCompactList}\small\item\em imprimir\+\_\+tablero Imprime en la matriz correspondiente la posición del jugador 1 y jugador 2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{game_8h_a026d019671eda0cfe729200fc24d23ba}\label{game_8h_a026d019671eda0cfe729200fc24d23ba}} 
+void \mbox{\hyperlink{game_8h_a026d019671eda0cfe729200fc24d23ba}{game\+Over}} ()
+\begin{DoxyCompactList}\small\item\em game\+Over Finaliza el juego, reinicará los marcadores a 0 y apagara todas las leds de la matriz para que nuevamente se cargue el mensaje inicial. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{game_8h_a2fbae1a264cf0b45351ef7b695de3c15}{validate\+Score}} ()
+\begin{DoxyCompactList}\small\item\em validate\+Score Verifica y valida si el jugador que anoto un punto aún no sea el ganador, cualquier jugador ganará al llegar a 4 putnos. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{game_8h_a7167f5c196fc5e167bfabde1a730e81d}\label{game_8h_a7167f5c196fc5e167bfabde1a730e81d}} 
+void \mbox{\hyperlink{game_8h_a7167f5c196fc5e167bfabde1a730e81d}{pause}} ()
+\begin{DoxyCompactList}\small\item\em pause Pausará o reanudará el juego. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{game_8h_a4cbfdb17bf51e00546880626f7e80429}\label{game_8h_a4cbfdb17bf51e00546880626f7e80429}} 
+void \mbox{\hyperlink{game_8h_a4cbfdb17bf51e00546880626f7e80429}{play\+Game}} ()
+\begin{DoxyCompactList}\small\item\em play\+Game Iniciará el juego. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{game_8h_a10863d2dd137b40ba976ec7c7f54ce56}\label{game_8h_a10863d2dd137b40ba976ec7c7f54ce56}} 
+void \mbox{\hyperlink{game_8h_a10863d2dd137b40ba976ec7c7f54ce56}{counter\+Three\+Second}} ()
+\begin{DoxyCompactList}\small\item\em counter\+Three\+Second Evento al pulsar el botón de start, que decidirá si el juego empieza o finaliza al mantener presionado por lo menos tres segundos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{game_8h_a12f3bdf9bb420f4ccc60692c566eee36}\label{game_8h_a12f3bdf9bb420f4ccc60692c566eee36}} 
+bool {\bfseries flag\+Game}
+\item 
+\mbox{\Hypertarget{game_8h_a7f8de6b502d76d2c629680779de3b5b0}\label{game_8h_a7f8de6b502d76d2c629680779de3b5b0}} 
+bool {\bfseries flag\+Pause}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Funciones para hacer mover a los jugadores y la pelota, pausar, reanudar y terminar el juego. 
+
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+19/08/2020 
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+A\+R\+Q\+UI 1, G\+R\+U\+PO 8 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{game_8h_aa99f06ead5638790aff85daffcd9a1dc}\label{game_8h_aa99f06ead5638790aff85daffcd9a1dc}} 
+\index{game.h@{game.h}!imprimir\_tablero@{imprimir\_tablero}}
+\index{imprimir\_tablero@{imprimir\_tablero}!game.h@{game.h}}
+\doxysubsubsection{\texorpdfstring{imprimir\_tablero()}{imprimir\_tablero()}}
+{\footnotesize\ttfamily void imprimir\+\_\+tablero (\begin{DoxyParamCaption}\item[{int}]{pos\+\_\+x,  }\item[{int}]{pos\+\_\+y,  }\item[{byte}]{player,  }\item[{byte}]{player2 }\end{DoxyParamCaption})}
+
+
+
+imprimir\+\_\+tablero Imprime en la matriz correspondiente la posición del jugador 1 y jugador 2. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos\+\_\+x} & Posición en X. \\
+\hline
+{\em pos\+\_\+y} & Posición en Y. \\
+\hline
+{\em player} & Posición del jugador 1. \\
+\hline
+{\em player2} & Posición del jugador 2. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{game_8h_a2fbae1a264cf0b45351ef7b695de3c15}\label{game_8h_a2fbae1a264cf0b45351ef7b695de3c15}} 
+\index{game.h@{game.h}!validateScore@{validateScore}}
+\index{validateScore@{validateScore}!game.h@{game.h}}
+\doxysubsubsection{\texorpdfstring{validateScore()}{validateScore()}}
+{\footnotesize\ttfamily bool validate\+Score (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+validate\+Score Verifica y valida si el jugador que anoto un punto aún no sea el ganador, cualquier jugador ganará al llegar a 4 putnos. 
+
+\begin{DoxyReturn}{Returns}
+Resultado de la verificación. 
+\end{DoxyReturn}

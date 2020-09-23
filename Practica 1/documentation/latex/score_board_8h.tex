@@ -1,0 +1,111 @@
+\hypertarget{score_board_8h}{}\doxysection{score\+Board.\+h File Reference}
+\label{score_board_8h}\index{scoreBoard.h@{scoreBoard.h}}
+
+
+Funciones para mostrar el marcador durante el juego y al pausar.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{score_board_8h_ad78e17950192777bf486c634a50f65e2}\label{score_board_8h_ad78e17950192777bf486c634a50f65e2}} 
+void \mbox{\hyperlink{score_board_8h_ad78e17950192777bf486c634a50f65e2}{setup\+\_\+score\+Board}} ()
+\begin{DoxyCompactList}\small\item\em setup\+\_\+score\+Board Se ejecuta para inicializar todas las variables y pines necesarios para mostrar el marcador. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{score_board_8h_a2bbe646c052baf99f04a367ef6031d74}\label{score_board_8h_a2bbe646c052baf99f04a367ef6031d74}} 
+void \mbox{\hyperlink{score_board_8h_a2bbe646c052baf99f04a367ef6031d74}{clean}} ()
+\begin{DoxyCompactList}\small\item\em clean Apaga todos los leds en las dos matrices de led. \end{DoxyCompactList}\item 
+byte $\ast$ \mbox{\hyperlink{score_board_8h_a0e068cfdceb4810457718d70baae6221}{get\+Array}} (char c)
+\begin{DoxyCompactList}\small\item\em get\+Array Obtiene la matriz correspondiente al marcador del jugador 1. \end{DoxyCompactList}\item 
+byte $\ast$ \mbox{\hyperlink{score_board_8h_a3c283c8b08458892cc12ef290d8b1c29}{get\+Array2}} (char c)
+\begin{DoxyCompactList}\small\item\em get\+Array2 Obtiene la matriz correspondiente al marcador del jugador 2. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{score_board_8h_a1e9b7f6474344090d00109f4cc05f3c2}{show\+Score\+Number}} (byte $\ast$arr, byte $\ast$arr2)
+\begin{DoxyCompactList}\small\item\em show\+Score\+Number Muestra el marcador en la matriz. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{score_board_8h_a892c84be84a8794089a15158e4c9600b}{show\+Score}} (char player\+Score1, char player\+Score2)
+\begin{DoxyCompactList}\small\item\em show\+Score Muestra el marcador en la matriz durante 3 segundos, luego de algún jugador anote un punto. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Funciones para mostrar el marcador durante el juego y al pausar. 
+
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+19/08/2020 
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+A\+R\+Q\+UI 1, G\+R\+U\+PO 8 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{score_board_8h_a0e068cfdceb4810457718d70baae6221}\label{score_board_8h_a0e068cfdceb4810457718d70baae6221}} 
+\index{scoreBoard.h@{scoreBoard.h}!getArray@{getArray}}
+\index{getArray@{getArray}!scoreBoard.h@{scoreBoard.h}}
+\doxysubsubsection{\texorpdfstring{getArray()}{getArray()}}
+{\footnotesize\ttfamily byte$\ast$ get\+Array (\begin{DoxyParamCaption}\item[{char}]{c }\end{DoxyParamCaption})}
+
+
+
+get\+Array Obtiene la matriz correspondiente al marcador del jugador 1. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Marcador del jugador 1. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+La el vector correspondiente al marcador de 0 a 4. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{score_board_8h_a3c283c8b08458892cc12ef290d8b1c29}\label{score_board_8h_a3c283c8b08458892cc12ef290d8b1c29}} 
+\index{scoreBoard.h@{scoreBoard.h}!getArray2@{getArray2}}
+\index{getArray2@{getArray2}!scoreBoard.h@{scoreBoard.h}}
+\doxysubsubsection{\texorpdfstring{getArray2()}{getArray2()}}
+{\footnotesize\ttfamily byte$\ast$ get\+Array2 (\begin{DoxyParamCaption}\item[{char}]{c }\end{DoxyParamCaption})}
+
+
+
+get\+Array2 Obtiene la matriz correspondiente al marcador del jugador 2. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Marcador del jugador 2. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+La el vector correspondiente al marcador de 0 a 4. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{score_board_8h_a892c84be84a8794089a15158e4c9600b}\label{score_board_8h_a892c84be84a8794089a15158e4c9600b}} 
+\index{scoreBoard.h@{scoreBoard.h}!showScore@{showScore}}
+\index{showScore@{showScore}!scoreBoard.h@{scoreBoard.h}}
+\doxysubsubsection{\texorpdfstring{showScore()}{showScore()}}
+{\footnotesize\ttfamily void show\+Score (\begin{DoxyParamCaption}\item[{char}]{player\+Score1,  }\item[{char}]{player\+Score2 }\end{DoxyParamCaption})}
+
+
+
+show\+Score Muestra el marcador en la matriz durante 3 segundos, luego de algún jugador anote un punto. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player\+Score1} & Marcador del jugador 1. \\
+\hline
+{\em player\+Score2} & Marcador del jugador 2. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{score_board_8h_a1e9b7f6474344090d00109f4cc05f3c2}\label{score_board_8h_a1e9b7f6474344090d00109f4cc05f3c2}} 
+\index{scoreBoard.h@{scoreBoard.h}!showScoreNumber@{showScoreNumber}}
+\index{showScoreNumber@{showScoreNumber}!scoreBoard.h@{scoreBoard.h}}
+\doxysubsubsection{\texorpdfstring{showScoreNumber()}{showScoreNumber()}}
+{\footnotesize\ttfamily void show\+Score\+Number (\begin{DoxyParamCaption}\item[{byte $\ast$}]{arr,  }\item[{byte $\ast$}]{arr2 }\end{DoxyParamCaption})}
+
+
+
+show\+Score\+Number Muestra el marcador en la matriz. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arr} & Vector del marcador del jugador 1. \\
+\hline
+{\em arr2} & Vector del marcador del jugador 2. \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,26 @@
+/*Control Banda*/
+CB_L1
+CB_L2
+
+/*Control Porton*/
+P_Open
+P_Close
+
+/*Control Luces*/
+CLG_On
+CLG_Off
+
+CLL1_On
+CLL1_Off
+
+CLL2_On
+CLL2_Off
+
+CLEE_On
+CLEE_Off
+
+CLSC_On
+CLSC_Off
+
+/*Control Temperatura*/
+

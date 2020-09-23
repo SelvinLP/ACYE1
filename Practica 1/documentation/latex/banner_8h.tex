@@ -1,0 +1,87 @@
+\hypertarget{banner_8h}{}\doxysection{banner.\+h File Reference}
+\label{banner_8h}\index{banner.h@{banner.h}}
+
+
+Funciones para mostrar el mensaje inicial solicitado.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{banner_8h_a854f695ddb6f454879f4c685bab8a68a}\label{banner_8h_a854f695ddb6f454879f4c685bab8a68a}} 
+void \mbox{\hyperlink{banner_8h_a854f695ddb6f454879f4c685bab8a68a}{setup\+\_\+banner}} ()
+\begin{DoxyCompactList}\small\item\em setup\+\_\+banner Se ejecuta para inicializar todas las variables y pines necesarios para mostrar el mensaje. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{banner_8h_aab05006100a49d2353395959e74cb34d}\label{banner_8h_aab05006100a49d2353395959e74cb34d}} 
+void \mbox{\hyperlink{banner_8h_aab05006100a49d2353395959e74cb34d}{show\+Banner}} ()
+\begin{DoxyCompactList}\small\item\em show\+Banner Mostrara el mensaje en en la matriz de led´s. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{banner_8h_ab7996a945dad329e55ad689d6c2616cf}\label{banner_8h_ab7996a945dad329e55ad689d6c2616cf}} 
+void \mbox{\hyperlink{banner_8h_ab7996a945dad329e55ad689d6c2616cf}{dir}} ()
+\begin{DoxyCompactList}\small\item\em dir Controla la dirrección(iquierda o derecha) en la que se movera el mensaje. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{banner_8h_aad1c62e00d8c9ab6917be353ca104b0c}{Definir\+Direccion}} (int var)
+\begin{DoxyCompactList}\small\item\em Se manda a imprimir las letras en la matriz de led\textquotesingle{}s. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{banner_8h_aaf30880118e4ad962c1e971b14f1f33c}{draw\+Screen}} (byte buffer2\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em draw\+Screen Se manda a imprimir las letras en la matriz de led\textquotesingle{}s sin driver. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{banner_8h_a69e89fcac392afcee806dc3ed3d183e5}{set\+Columns}} (byte b)
+\begin{DoxyCompactList}\small\item\em set\+Columns Se selección la columna que encendera. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Funciones para mostrar el mensaje inicial solicitado. 
+
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+19/08/2020 
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+A\+R\+Q\+UI 1, G\+R\+U\+PO 8 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{banner_8h_aad1c62e00d8c9ab6917be353ca104b0c}\label{banner_8h_aad1c62e00d8c9ab6917be353ca104b0c}} 
+\index{banner.h@{banner.h}!DefinirDireccion@{DefinirDireccion}}
+\index{DefinirDireccion@{DefinirDireccion}!banner.h@{banner.h}}
+\doxysubsubsection{\texorpdfstring{DefinirDireccion()}{DefinirDireccion()}}
+{\footnotesize\ttfamily void Definir\+Direccion (\begin{DoxyParamCaption}\item[{int}]{var }\end{DoxyParamCaption})}
+
+
+
+Se manda a imprimir las letras en la matriz de led\textquotesingle{}s. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em var} & Dirección en la que se movera el mensaje. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{banner_8h_aaf30880118e4ad962c1e971b14f1f33c}\label{banner_8h_aaf30880118e4ad962c1e971b14f1f33c}} 
+\index{banner.h@{banner.h}!drawScreen@{drawScreen}}
+\index{drawScreen@{drawScreen}!banner.h@{banner.h}}
+\doxysubsubsection{\texorpdfstring{drawScreen()}{drawScreen()}}
+{\footnotesize\ttfamily void draw\+Screen (\begin{DoxyParamCaption}\item[{byte}]{buffer2\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+draw\+Screen Se manda a imprimir las letras en la matriz de led\textquotesingle{}s sin driver. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer2\mbox{[}$\,$\mbox{]}} & Vector a imprimir. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{banner_8h_a69e89fcac392afcee806dc3ed3d183e5}\label{banner_8h_a69e89fcac392afcee806dc3ed3d183e5}} 
+\index{banner.h@{banner.h}!setColumns@{setColumns}}
+\index{setColumns@{setColumns}!banner.h@{banner.h}}
+\doxysubsubsection{\texorpdfstring{setColumns()}{setColumns()}}
+{\footnotesize\ttfamily void set\+Columns (\begin{DoxyParamCaption}\item[{byte}]{b }\end{DoxyParamCaption})}
+
+
+
+set\+Columns Se selección la columna que encendera. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Columna donde se desplazara \\
+\hline
+\end{DoxyParams}
