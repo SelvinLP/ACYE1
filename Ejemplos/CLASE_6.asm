@@ -1,4 +1,4 @@
-1print macro cadena
+print macro cadena
 mov ah,09h
 mov dx,@data
 mov ds,dx
