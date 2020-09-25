@@ -19,10 +19,8 @@ fl5 db 0, 0, 0, 0, 0, 0, 0, 0
 fl6 db 0, 2, 0, 2, 0, 2, 0, 2
 fl7 db 2, 0, 2, 0, 2, 0, 2, 0
 fl8 db 0, 2, 0, 2, 0, 2, 0, 2
-rfila db 0b
-rcolum db 0b
+estadojugador db 0,1;0 es turno de blanco sino es turno de negro
 coordenada db 6 dup('$'),'$'
-coordenada2 db 6 dup('$'),'$'
 num8 db 0ah,0dh,' 8  |','$'
 num7 db 0ah,0dh,' 7  |','$'
 num6 db 0ah,0dh,' 6  |','$'
@@ -40,6 +38,9 @@ fichan db 'FN|','$'
 fichav db '  |','$'
 turnob db 0ah,0dh,'Turno Blancas: ','$'
 turnon db 0ah,0dh,'Turno Negras: ','$'
+moverjug db 0ah,0dh,'1) Mover Pieza ','$'
+guardarpart db 0ah,0dh,'2) Guardar ','$'
+saliramenu db 0ah,0dh,'3) Menu Principal ','$'
 .code 
 
 main proc
@@ -48,25 +49,42 @@ main proc
 		imprimir encabezadomenu
 		obtenerchar
 		cmp al,49
-			je Iniciar
+			je Jugador1
 		cmp al,50
 			je Importar
-		jmp Salir
+		cmp al,51
+			je Salir
+		jmp MenuPrincipal
 	Iniciar:
-		generarmatriz
-		jmp Jugador1
+		imprimir moverjug
+		imprimir guardarpart
+		imprimir saliramenu
+		obtenerchar
+		cmp al,49
+			je Jugador1
+		cmp al,50
+			je Guardar
+		cmp al,51
+			je MenuPrincipal
+		jmp Iniciar
 	Jugador1:
+		generarmatriz
+		mov estadojugador[0],1
 		imprimir turnob
 		obtenertexto coordenada
 		juegomatriz
 		generarmatriz
-		
 		jmp Jugador2
 	Jugador2:
+		mov estadojugador[0],2
 		imprimir turnon
-		obtenertexto coordenada2
-		jmp MenuPrincipal
+		obtenertexto coordenada
+		juegomatriz
+		generarmatriz
+		jmp Iniciar
 	Importar:
+		jmp MenuPrincipal
+	Guardar:
 		jmp MenuPrincipal
 	Salir: 
 		MOV ah,4ch 
