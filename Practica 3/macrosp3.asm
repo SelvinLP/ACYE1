@@ -92,3 +92,11 @@ mov ah,3eh
 mov handle,bx
 int 21h
 endm
+
+Leerarchivo macro numbytes,arr,handle
+mov ah,3fh
+mov bx,handle
+mov cx,numbytes
+lea dx,arr
+int 21h
+endm

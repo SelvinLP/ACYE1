@@ -315,8 +315,8 @@ POP dx
 POP ax
 endm
 
-;-- Exportando datos
-importando macro array,valor
+;-- EXPORTANDO DATOS
+expotandod macro array,valor
 LOCAL ImprimirMatriz
 PUSH ax
 PUSH dx
@@ -331,7 +331,86 @@ ImprimirMatriz:
     cmp ax, 8
     	jne ImprimirMatriz
 
-	
+POP dx
+POP ax
+endm
+
+;-- IMPORTANDO DATOS --
+importando macro
+PUSH ax
+PUSH dx
+mov ax,0
+Datos1:
+    mov si, ax
+    mov dh, arrayescritura[si]
+    sub dh,48
+    mov fl1[si],dh
+    inc ax
+    cmp ax, 8
+    	jne Datos1
+Datos2:
+    mov si, ax
+    mov dh, arrayescritura[si]
+    sub dh,48
+    sub si,8
+    mov fl2[si],dh
+    inc ax
+    cmp ax, 16
+    	jne Datos2
+Datos3:
+    mov si, ax
+    mov dh, arrayescritura[si]
+    sub si,16
+    sub dh,48
+    mov fl3[si],dh
+    inc ax
+    cmp ax, 24
+    	jne Datos3
+Datos4:
+    mov si, ax
+    mov dh, arrayescritura[si]
+    sub si,24
+    sub dh,48
+    mov fl4[si],dh
+    inc ax
+    cmp ax, 32
+    	jne Datos4
+Datos5:
+    mov si, ax
+    mov dh, arrayescritura[si]
+    sub si,32
+    sub dh,48
+    mov fl5[si],dh
+    inc ax
+    cmp ax, 40
+    	jne Datos5
+Datos6:
+    mov si, ax
+    mov dh, arrayescritura[si]
+    sub si,40
+    sub dh,48
+    mov fl6[si],dh
+    inc ax
+    cmp ax, 48
+    	jne Datos6
+Datos7:
+    mov si, ax
+    mov dh, arrayescritura[si]
+    sub si,48
+    sub dh,48
+    mov fl7[si],dh
+    inc ax
+    cmp ax, 56
+    	jne Datos7
+Datos8:
+    mov si, ax
+    mov dh, arrayescritura[si]
+    sub si,56
+    sub dh,48
+    mov fl8[si],dh
+    inc ax
+    cmp ax, 64
+    	jne Datos8
 POP dx
 POP ax
 endm

@@ -87,20 +87,27 @@ main proc
 		generarmatriz
 		jmp Iniciar
 	Importar:
+		imprimir ingreruta
+		obtenerruta rutaarchivo
+		Abrirarchivo rutaArchivo,handleFichero
+		Leerarchivo SIZEOF arrayescritura,arrayescritura,handleFichero
+		Cerrararchivo handleFichero
+		importando
+
 		jmp MenuPrincipal
 	Guardar:
 		imprimir ingreruta
 		obtenerruta rutaarchivo
 		Creararchivo rutaArchivo,handleFichero
 		Abrirarchivo rutaArchivo,handleFichero
-		importando fl1,0
-		importando fl2,8
-		importando fl3,16
-		importando fl4,24
-		importando fl5,32
-		importando fl6,40
-		importando fl7,48
-		importando fl8,56
+		expotandod fl1,0
+		expotandod fl2,8
+		expotandod fl3,16
+		expotandod fl4,24
+		expotandod fl5,32
+		expotandod fl6,40
+		expotandod fl7,48
+		expotandod fl8,56
 		Escribirarchivo SIZEOF arrayescritura, arrayescritura,handleFichero
 		Cerrararchivo handleFichero
 		jmp MenuPrincipal
