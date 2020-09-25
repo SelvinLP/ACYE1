@@ -314,3 +314,24 @@ Salida:
 POP dx
 POP ax
 endm
+
+;-- Exportando datos
+importando macro array,valor
+LOCAL ImprimirMatriz
+PUSH ax
+PUSH dx
+mov ax,0
+ImprimirMatriz:
+    mov si, ax
+    mov dh, array[si]
+    add si,valor
+    add dh,48
+    mov arrayescritura[si],dh
+    inc ax
+    cmp ax, 8
+    	jne ImprimirMatriz
+
+	
+POP dx
+POP ax
+endm

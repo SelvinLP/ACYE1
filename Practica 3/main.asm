@@ -21,6 +21,7 @@ fl7 db 2, 0, 2, 0, 2, 0, 2, 0
 fl8 db 0, 2, 0, 2, 0, 2, 0, 2
 estadojugador db 0,1;0 es turno de blanco sino es turno de negro
 coordenada db 6 dup('$'),'$'
+rutaarchivo db 100 dup('$'),'$'
 num8 db 0ah,0dh,' 8  |','$'
 num7 db 0ah,0dh,' 7  |','$'
 num6 db 0ah,0dh,' 6  |','$'
@@ -36,11 +37,14 @@ ficharn db 'RN|','$'
 fichab db 'FB|','$'
 fichan db 'FN|','$'
 fichav db '  |','$'
+ingreruta db 0ah,0dh,'Ingrese ruta: ','$'
 turnob db 0ah,0dh,'Turno Blancas: ','$'
 turnon db 0ah,0dh,'Turno Negras: ','$'
 moverjug db 0ah,0dh,'1) Mover Pieza ','$'
 guardarpart db 0ah,0dh,'2) Guardar ','$'
 saliramenu db 0ah,0dh,'3) Menu Principal ','$'
+arrayescritura db 64 dup('$')
+handleFichero dw ?
 .code 
 
 main proc
@@ -85,6 +89,20 @@ main proc
 	Importar:
 		jmp MenuPrincipal
 	Guardar:
+		imprimir ingreruta
+		obtenerruta rutaarchivo
+		Creararchivo rutaArchivo,handleFichero
+		Abrirarchivo rutaArchivo,handleFichero
+		importando fl1,0
+		importando fl2,8
+		importando fl3,16
+		importando fl4,24
+		importando fl5,32
+		importando fl6,40
+		importando fl7,48
+		importando fl8,56
+		Escribirarchivo SIZEOF arrayescritura, arrayescritura,handleFichero
+		Cerrararchivo handleFichero
 		jmp MenuPrincipal
 	Salir: 
 		MOV ah,4ch 
