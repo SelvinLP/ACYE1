@@ -97,6 +97,20 @@ Leerarchivo macro numbytes,arr,handle
 mov ah,3fh
 mov bx,handle
 mov cx,numbytes
+lea dx,ingreruta
 lea dx,arr
 int 21h
 endm
+
+;-- FECHA Y HORA --
+ObtenerFecha macro
+mov ah,2ah
+int 21h
+endm
+
+
+ObtenerHora macro
+mov ah,2ch
+int 21h
+endm
+
