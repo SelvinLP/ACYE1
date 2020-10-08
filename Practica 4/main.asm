@@ -13,7 +13,9 @@ ingreruta db 0ah,0dh,'Ingrese ruta: ','$'
 rutaarchivo db 100 dup('$'),'$'
 arrayescritura db 10000 dup('$')
 handleFichero dw ?  
+Objpadre db 100 dup('$')
 Operadores db 100 dup('$')
+lisOpera1 db 100 dup ('$')
 Opera1 db 10 dup('$')
 Opera2 db 10 dup('$')
 Estadope db 1 dup(0)
@@ -38,6 +40,7 @@ main proc
 		Leerarchivo SIZEOF arrayescritura,arrayescritura,handleFichero
 		Cerrararchivo handleFichero
 		Leerjson
+		imprimir Objpadre
 		jmp MenuPrincipal
 	Consola:
 		jmp MenuPrincipal

@@ -4,6 +4,25 @@ push ax
 xor si,si
 xor dh,dh
 Inicio:
+    xor cx,cx 
+    inc si
+    mov dh, arrayescritura[si-1]
+    cmp dh, 34
+        je DatosPadre ;Encontro "
+    jmp Inicio
+DatosPadre:
+    mov dh, arrayescritura[si]
+    push si
+    mov si,cx
+    mov Objpadre[si],dh
+    inc cx
+    pop si
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,34
+        je Ciclo
+    jmp DatosPadre
+InicioPrim:
     mov dh, arrayescritura[si]
     cmp dh, 34
         je Verificaciontipo ;Encontro "
@@ -30,7 +49,7 @@ Verificaciontipo:
     cmp dh, 100  ;Posible div
         je Cadenadiv
     cmp dh, 105  ;Posible id
-        je Cadenadiv
+        je Cadenaid
     jmp Ciclo
 Digito:
     xor cx,cx
@@ -70,19 +89,48 @@ Valordigito: ; Toma los digitos
     cmp dh,57 ; 9
         je Valordigito
     cmp dh,44 ; , es que tiene un segundo valor
-        je SegValor
+        je Comproseg
     cmp Estadope[0], 1
         je Operar
     jmp Ciclo
+Comproseg:
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,34
+        je SegValor
+    jmp Comproseg
 SegValor:
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,35   ;Encontro #
+        je Digito2
+    cmp dh,43   ;Encontro +
+        je Suma
+    cmp dh,45   ;Encontro -
+        je Menos
+    cmp dh,42   ;Encontro *
+        je Mult
+    cmp dh,47   ;Encontro /
+        je Divis
+    cmp dh, 97  ;Posible add
+        je Cadenaadd
+    cmp dh, 115  ;Posible sub
+        je Cadenasub
+    cmp dh, 109  ;Posible mult
+        je Cadenamult
+    cmp dh, 100  ;Posible div
+        je Cadenadiv
+    cmp dh, 105  ;Posible id
+        je Cadenaid
+    jmp Ciclo
+Digito2:
     xor cx,cx
     inc si
-    mov dh, arrayescritura[si-1]
-    cmp dh, 58
-        je Valordigito2
-    jmp SegValor
-Valordigito2: ; Toma los digitos
+    inc si
+    inc si
     mov dh, arrayescritura[si]
+    jmp Valordigito2
+Valordigito2: ; Toma los digitos
     push si
     mov si,cx
     mov Opera2[si],dh
@@ -226,7 +274,7 @@ Ciclo:
     xor cx,cx
     inc si
     cmp si, SIZEOF arrayescritura
-    	jne Inicio
+    	jne InicioPrim
 
 pop ax
 endm
@@ -236,7 +284,16 @@ Opesuma macro
     imprimir Opera1
     imprimirchar 43
     imprimir Opera2
-    imprimirchar 33
+    CovertirAscii Opera1
+    mov bx,ax
+	push bx
+	CovertirAscii Opera2
+	pop bx
+	add ax,bx
+    ConvertirString Opera2
+    imprimirchar 61
+    imprimir Opera2
+    imprimirchar 10
     pop ax
 endm
 
@@ -245,7 +302,16 @@ Operesta macro
     imprimir Opera1
     imprimirchar 45
     imprimir Opera2
-    imprimirchar 33
+    CovertirAscii Opera1
+    mov bx,ax
+	push bx
+	CovertirAscii Opera2
+	pop bx
+	sub ax,bx
+    ConvertirString Opera2
+    imprimirchar 61
+    imprimir Opera2
+    imprimirchar 10
     pop ax
 endm
 
@@ -254,7 +320,16 @@ Opemult macro
     imprimir Opera1
     imprimirchar 42
     imprimir Opera2
-    imprimirchar 33
+    CovertirAscii Opera1
+    mov bx,ax
+	push bx
+	CovertirAscii Opera2
+	pop bx
+    imul ax
+    ConvertirString Opera2
+    imprimirchar 61
+    imprimir Opera2
+    imprimirchar 10
     pop ax
 endm
 
@@ -263,6 +338,15 @@ Opediv macro
     imprimir Opera1
     imprimirchar 47
     imprimir Opera2
-    imprimirchar 33
+    CovertirAscii Opera2
+    mov bx,ax
+	push bx
+	CovertirAscii Opera1
+	pop bx
+    idiv bx
+    ConvertirString Opera2
+    imprimirchar 61
+    imprimir Opera2
+    imprimirchar 10
     pop ax
 endm

@@ -61,3 +61,65 @@ Inicio:
 Salir:
 	mov arr[si],00h
 endm
+
+
+ConvertirString macro buffer
+LOCAL Dividir,Dividir2,FinCr3,NEGATIVO,FIN2,FIN
+push si 
+xor si,si
+xor cx,cx
+xor bx,bx
+xor dx,dx
+mov dl,0ah
+test ax,1000000000000000
+jnz NEGATIVO
+jmp Dividir2
+NEGATIVO:
+	neg ax
+	mov buffer[si],45
+	inc si
+	jmp Dividir2
+Dividir:
+	xor ah,ah
+Dividir2:
+	div dl
+	inc cx
+	push ax
+	cmp al,00h
+	je FinCr3
+	jmp Dividir
+FinCr3:
+	pop ax
+	add ah,30h
+	mov buffer[si],ah
+	inc si
+	loop FinCr3
+	mov ah,24h
+	mov buffer[si],ah
+	inc si
+FIN:
+pop si
+endm
+
+CovertirAscii macro numero
+LOCAL INICIO,FIN
+push si
+xor ax,ax
+xor bx,bx
+xor cx,cx
+mov bx,10	
+xor si,si
+INICIO:
+	mov cl,numero[si] 
+	cmp cl,48
+	jl FIN
+	cmp cl,57
+	jg FIN
+	inc si
+	sub cl,48	
+	mul bx		
+	add ax,cx	
+	jmp INICIO
+FIN:
+pop si
+endm
