@@ -15,10 +15,11 @@ arrayescritura db 10000 dup('$')
 handleFichero dw ?  
 Objpadre db 100 dup('$')
 Operadores db 100 dup('$')
-lisOpera1 db 100 dup ('$')
+ids db 100 dup ('$')
 Opera1 db 10 dup('$')
 Opera2 db 10 dup('$')
-Estadope db 1 dup(0)
+Contope db 2 dup(0)
+Estadope db 2 dup(0)
 .code 
 
 main proc
@@ -40,7 +41,6 @@ main proc
 		Leerarchivo SIZEOF arrayescritura,arrayescritura,handleFichero
 		Cerrararchivo handleFichero
 		Leerjson
-		imprimir Objpadre
 		jmp MenuPrincipal
 	Consola:
 		jmp MenuPrincipal

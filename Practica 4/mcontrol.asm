@@ -123,3 +123,18 @@ INICIO:
 FIN:
 pop si
 endm
+
+Limpiararr macro arr
+Local LCiclo, LSalir
+	xor cx,cx
+	LCiclo:
+	push si
+	mov si,cx
+	mov arr[si],'$'
+	pop si
+	inc cx
+    cmp cx, SIZEOF arr
+    	jne LCiclo
+	LSalir:
+	xor cx,cx
+endm

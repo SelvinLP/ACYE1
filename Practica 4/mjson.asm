@@ -1,14 +1,14 @@
 Leerjson macro 
-local Salida
 push ax
 xor si,si
 xor dh,dh
+xor ax,ax
 Inicio:
     xor cx,cx 
     inc si
     mov dh, arrayescritura[si-1]
     cmp dh, 34
-        je DatosPadre ;Encontro "
+        je DatosPadre ; Encontro "
     jmp Inicio
 DatosPadre:
     mov dh, arrayescritura[si]
@@ -20,14 +20,36 @@ DatosPadre:
     inc si
     mov dh, arrayescritura[si]
     cmp dh,34
-        je Ciclo
+        je InicioPrim ; Encontro "
     jmp DatosPadre
 InicioPrim:
+    inc si
+    BucleRecono
+pop ax
+endm
+
+Opesuma macro
+    pop ax
+    mov bx,ax
+	push bx
+	CovertirAscii Opera2
+	pop bx
+	add ax,bx
+    ConvertirString Opera2
+    imprimirchar 61
+    imprimir Opera2
+    imprimirchar 10
+endm
+
+
+BucleRecono macro
+
+Iniciocl:
     mov dh, arrayescritura[si]
     cmp dh, 34
-        je Verificaciontipo ;Encontro "
+        je Binicio ;Encontro "
     jmp Ciclo
-Verificaciontipo:
+Binicio:
     inc si
     mov dh, arrayescritura[si]
     cmp dh,35   ;Encontro #
@@ -35,21 +57,31 @@ Verificaciontipo:
     cmp dh,43   ;Encontro +
         je Suma
     cmp dh,45   ;Encontro -
-        je Menos
-    cmp dh,42   ;Encontro *
-        je Mult
-    cmp dh,47   ;Encontro /
-        je Divis
-    cmp dh, 97  ;Posible add
-        je Cadenaadd
-    cmp dh, 115  ;Posible sub
-        je Cadenasub
-    cmp dh, 109  ;Posible mult
-        je Cadenamult
-    cmp dh, 100  ;Posible div
-        je Cadenadiv
-    cmp dh, 105  ;Posible id
-        je Cadenaid
+        je Resta
+    jmp Ciclo
+Suma:
+    mov Estadope[0],0
+    push si
+    mov cl, Contope[0]
+    mov si,cx
+    mov Operadores[si],43
+    inc cl
+    mov Contope[0],cl
+    xor cx,cx
+    pop si
+    inc si
+    jmp Ciclo
+Resta:
+    mov Estadope[0],0
+    push si
+    mov cl, Contope[0]
+    mov si,cx
+    mov Operadores[si],45
+    inc cl
+    mov Contope[0],cl
+    xor cx,cx
+    pop si
+    inc si
     jmp Ciclo
 Digito:
     xor cx,cx
@@ -89,40 +121,31 @@ Valordigito: ; Toma los digitos
     cmp dh,57 ; 9
         je Valordigito
     cmp dh,44 ; , es que tiene un segundo valor
-        je Comproseg
-    cmp Estadope[0], 1
-        je Operar
+        je Operacio2
+    jmp Guardarval
+Guardarval:
+    CovertirAscii Opera1
+    Limpiararr Opera1
+    push ax
+    ;Se guardo valor 1
     jmp Ciclo
-Comproseg:
+Operacio2:
     inc si
     mov dh, arrayescritura[si]
     cmp dh,34
         je SegValor
-    jmp Comproseg
-SegValor:
+    jmp Operacio2
+Segvalor:
+    imprimir Opera1
+    CovertirAscii Opera1
+    Limpiararr Opera1
+    push ax
+    ;Se guardo valor 1
     inc si
     mov dh, arrayescritura[si]
     cmp dh,35   ;Encontro #
         je Digito2
-    cmp dh,43   ;Encontro +
-        je Suma
-    cmp dh,45   ;Encontro -
-        je Menos
-    cmp dh,42   ;Encontro *
-        je Mult
-    cmp dh,47   ;Encontro /
-        je Divis
-    cmp dh, 97  ;Posible add
-        je Cadenaadd
-    cmp dh, 115  ;Posible sub
-        je Cadenasub
-    cmp dh, 109  ;Posible mult
-        je Cadenamult
-    cmp dh, 100  ;Posible div
-        je Cadenadiv
-    cmp dh, 105  ;Posible id
-        je Cadenaid
-    jmp Ciclo
+    jmp Salidarepetir
 Digito2:
     xor cx,cx
     inc si
@@ -160,193 +183,50 @@ Valordigito2: ; Toma los digitos
         je Valordigito2
     cmp dh,57 ; 9
         je Valordigito2
-    mov Estadope[0],1
+
     jmp Operar
 Operar:
-    cmp al,43
+    push si
+    mov cl, Contope[0]
+    cmp cl,0
+        je Ciclo
+    mov si,cx
+    mov dh,Operadores[si-1]
+    dec cl
+    mov Contope[0],cl
+    xor cx,cx
+    pop si
+    cmp dh,43
         je Llamasum
-    cmp al,45
+    cmp dh,45
         je Llamarest
-    cmp al,42
+    cmp dh,42
         je Llamamul
-    cmp al,47
+    cmp dh,47
         je Llamadiv
-    
     jmp Ciclo
 Llamasum:
-    pop ax
+    imprimirchar dh
     Opesuma
-    jmp Ciclo
+    cmp ax,0
+        je Ciclo
+    jmp Operar
 Llamarest:
-    pop ax
-    Operesta
+    imprimirchar dh
     jmp Ciclo
 Llamamul:
-    pop ax
-    Opemult
+    imprimirchar dh
     jmp Ciclo
 Llamadiv:
-    pop ax
-    Opediv
+    imprimirchar dh
     jmp Ciclo
-Suma:
-    mov Estadope[0],0
-    push ax
-    mov ax,43
-    inc si
-    jmp Ciclo
-Menos:
-    mov Estadope[0],0
-    push ax
-    mov ax,45
-    inc si
-    jmp Ciclo
-Mult:
-    mov Estadope[0],0
-    push ax
-    mov ax,42
-    inc si
-    jmp Ciclo
-Divis:
-    mov Estadope[0],0
-    push ax
-    mov ax,47
-    inc si
-    jmp Ciclo
-Id:
-    jmp Ciclo
-Cadenaadd:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,100
-        je Cadenaadd2
-    jmp Ciclo
-Cadenaadd2:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,100
-        je Suma
-    jmp Ciclo
-Cadenasub:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,117
-        je Cadenasub2
-    jmp Ciclo
-Cadenasub2:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,98
-        je Menos
-    jmp Ciclo
-Cadenamult:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,117
-        je Cadenamult2
-    jmp Ciclo
-Cadenamult2:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,108
-        je Mult
-    jmp Ciclo
-Cadenadiv:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,105
-        je Cadenadiv2
-    jmp Ciclo
-Cadenadiv2:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,118
-        je Divis
-    jmp Ciclo
-Cadenaid:
-    inc si
-    mov dh, arrayescritura[si]
-    cmp dh,100
-        je Id
-    jmp Ciclo
-
+Salidarepetir:
+    ; llama otravez al metodo
+    dec si
+    jmp Binicio
 Ciclo:
     xor cx,cx
     inc si
     cmp si, SIZEOF arrayescritura
-    	jne InicioPrim
-
-pop ax
-endm
-
-Opesuma macro
-    push ax
-    imprimir Opera1
-    imprimirchar 43
-    imprimir Opera2
-    CovertirAscii Opera1
-    mov bx,ax
-	push bx
-	CovertirAscii Opera2
-	pop bx
-	add ax,bx
-    ConvertirString Opera2
-    imprimirchar 61
-    imprimir Opera2
-    imprimirchar 10
-    pop ax
-endm
-
-Operesta macro
-    push ax
-    imprimir Opera1
-    imprimirchar 45
-    imprimir Opera2
-    CovertirAscii Opera1
-    mov bx,ax
-	push bx
-	CovertirAscii Opera2
-	pop bx
-	sub ax,bx
-    ConvertirString Opera2
-    imprimirchar 61
-    imprimir Opera2
-    imprimirchar 10
-    pop ax
-endm
-
-Opemult macro
-    push ax
-    imprimir Opera1
-    imprimirchar 42
-    imprimir Opera2
-    CovertirAscii Opera1
-    mov bx,ax
-	push bx
-	CovertirAscii Opera2
-	pop bx
-    imul ax
-    ConvertirString Opera2
-    imprimirchar 61
-    imprimir Opera2
-    imprimirchar 10
-    pop ax
-endm
-
-Opediv macro
-    push ax
-    imprimir Opera1
-    imprimirchar 47
-    imprimir Opera2
-    CovertirAscii Opera2
-    mov bx,ax
-	push bx
-	CovertirAscii Opera1
-	pop bx
-    idiv bx
-    ConvertirString Opera2
-    imprimirchar 61
-    imprimir Opera2
-    imprimirchar 10
-    pop ax
+    	jne Iniciocl
 endm
