@@ -41,9 +41,48 @@ Opesuma macro
     imprimirchar 10
 endm
 
+Operesta macro
+    pop ax
+    mov bx,ax
+	push bx
+	CovertirAscii Opera2
+	pop bx
+	sub ax,bx
+    neg ax
+    ConvertirString Opera2
+    imprimirchar 61
+    imprimir Opera2
+    imprimirchar 10
+endm
+
+
+Opemult macro
+    pop ax
+    mov bx,ax
+	push bx
+	CovertirAscii Opera2
+	pop bx
+    imul bl
+    ConvertirString Opera2
+    imprimirchar 61
+    imprimir Opera2
+    imprimirchar 10
+endm
+
+Opediv macro
+    CovertirAscii Opera2
+    mov bx,ax
+	pop ax
+    idiv bx
+    ConvertirString Opera2
+    imprimirchar 61
+    imprimir Opera2
+    imprimirchar 10
+endm
 
 BucleRecono macro
-
+xor ax,ax
+push ax
 Iniciocl:
     mov dh, arrayescritura[si]
     cmp dh, 34
@@ -58,29 +97,33 @@ Binicio:
         je Suma
     cmp dh,45   ;Encontro -
         je Resta
+    cmp dh,42   ;Encontro *
+        je Mult
+    cmp dh,47   ;Encontro /
+        je Divis
     jmp Ciclo
 Suma:
-    mov Estadope[0],0
-    push si
-    mov cl, Contope[0]
-    mov si,cx
-    mov Operadores[si],43
-    inc cl
-    mov Contope[0],cl
-    xor cx,cx
-    pop si
+    mov ax,43
+    push ax
+    xor ax,ax
     inc si
     jmp Ciclo
 Resta:
-    mov Estadope[0],0
-    push si
-    mov cl, Contope[0]
-    mov si,cx
-    mov Operadores[si],45
-    inc cl
-    mov Contope[0],cl
-    xor cx,cx
-    pop si
+    mov ax,45
+    push ax
+    xor ax,ax
+    inc si
+    jmp Ciclo
+Mult:
+    mov ax,42
+    push ax
+    xor ax,ax
+    inc si
+    jmp Ciclo
+Divis:
+    mov ax,47
+    push ax
+    xor ax,ax
     inc si
     jmp Ciclo
 Digito:
@@ -90,6 +133,7 @@ Digito:
     inc si
     mov dh, arrayescritura[si]
     jmp Valordigito
+
 Valordigito: ; Toma los digitos
     push si
     mov si,cx
@@ -136,7 +180,6 @@ Operacio2:
         je SegValor
     jmp Operacio2
 Segvalor:
-    imprimir Opera1
     CovertirAscii Opera1
     Limpiararr Opera1
     push ax
@@ -153,7 +196,7 @@ Digito2:
     inc si
     mov dh, arrayescritura[si]
     jmp Valordigito2
-Valordigito2: ; Toma los digitos
+Valordigito2: ; Toma los digitos 2
     push si
     mov si,cx
     mov Opera2[si],dh
@@ -183,43 +226,70 @@ Valordigito2: ; Toma los digitos
         je Valordigito2
     cmp dh,57 ; 9
         je Valordigito2
-
     jmp Operar
 Operar:
-    push si
-    mov cl, Contope[0]
-    cmp cl,0
-        je Ciclo
-    mov si,cx
-    mov dh,Operadores[si-1]
-    dec cl
-    mov Contope[0],cl
-    xor cx,cx
-    pop si
-    cmp dh,43
+    pop ax
+    ConvertirString Opera1
+    imprimir Opera1
+    pop ax
+    imprimirchar al
+    imprimir Opera2
+    cmp al,43
         je Llamasum
-    cmp dh,45
+    cmp al,45
         je Llamarest
-    cmp dh,42
+    cmp al,42
         je Llamamul
-    cmp dh,47
+    cmp al,47
         je Llamadiv
     jmp Ciclo
 Llamasum:
-    imprimirchar dh
+    CovertirAscii Opera1
+    Limpiararr Opera1
+    push ax
     Opesuma
-    cmp ax,0
+    pop ax
+    cmp al,0
         je Ciclo
-    jmp Operar
+    jmp Posibleoperec
 Llamarest:
-    imprimirchar dh
-    jmp Ciclo
+    CovertirAscii Opera1
+    Limpiararr Opera1
+    push ax
+    Operesta
+    pop ax
+    cmp al,0
+        je Ciclo
+    jmp Posibleoperec
 Llamamul:
-    imprimirchar dh
-    jmp Ciclo
+    CovertirAscii Opera1
+    Limpiararr Opera1
+    push ax
+    Opemult
+    pop ax
+    cmp al,0
+        je Ciclo
+    jmp Posibleoperec
 Llamadiv:
-    imprimirchar dh
-    jmp Ciclo
+    CovertirAscii Opera1
+    Limpiararr Opera1
+    push ax
+    Opediv
+    pop ax
+    cmp al,0
+        je Ciclo
+    jmp Posibleoperec
+Posibleoperec:
+    cmp al,43 ;+
+        je Ciclo
+    cmp al,45 ;-
+        je Ciclo
+    cmp al,42 ;*
+        je Ciclo
+    cmp al,47 ;/
+        je Ciclo
+    push ax
+    jmp Operar
 Salidarepetir:
     ; llama otravez al metodo
     dec si
