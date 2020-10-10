@@ -11,7 +11,7 @@ encabezado db 0ah,0dh,'UNIVERSIDAD SAN CARLOS DE GUATEMALA', 0ah,0dh, 'FACULDAD 
 encabezadomenu db 0ah,0dh,' ' ,0ah,0dh,'1) Cargar ',0ah,0dh,'2) Consola',0ah,0dh,'3) Salir','$'
 ingreruta db 0ah,0dh,'Ingrese ruta: ','$'
 rutaarchivo db 100 dup('$'),'$'
-arrayescritura db 10000 dup('$')
+arrayescritura db 5000 dup('$')
 handleFichero dw ?  
 Objpadre db 100 dup('$')
 Operadores db 100 dup('$')
