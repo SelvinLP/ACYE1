@@ -68,12 +68,12 @@ LMetodo:
     xor cx,cx
     inc si
     BucleRecono
-    imprimir Objpadre
-    imprimirchar 10
-    imprimir ids
-    imprimirchar 10
-    imprimir valoresu
-    imprimirchar 10
+    ;imprimir Objpadre
+    ;imprimirchar 10
+    ;imprimir ids
+    ;imprimirchar 10
+    ;imprimir valoresu
+    ;imprimirchar 10
 pop ax
 endm
 
@@ -191,9 +191,17 @@ Divis:
     jmp Ciclo
 VId:
     ;Obtener el valor del id
-    imprimirchar dh
-
-    jmp Ciclo
+    inc si 
+    inc si
+    inc si
+    mov dh, arrayescritura[si]
+    Limpiararr Opera1
+    valid
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,44 ; , es que tiene un segundo valor
+        je Operacio2
+    jmp Guardarval
 Cadenaadd:
     inc si
     mov dh, arrayescritura[si]
@@ -355,7 +363,6 @@ Noid:
     pop si
     inc si
     mov dh, arrayescritura[si]
-    jmp Idguar
     jmp Idguar
 Digito:
     xor cx,cx
@@ -557,7 +564,29 @@ Tipo2:
     mov dh, arrayescritura[si]
     cmp dh,35   ;Encontro #
         je ObDigito
+    cmp dh, 73  ;Posible id 
+        je Cadenaid2
+    cmp dh, 105  ;Posible id 
+        je Cadenaid2
     jmp Ciclo
+Cadenaid2:
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,68
+        je obvalorid2
+    cmp dh,100
+        je obvalorid2
+    jmp Ciclo
+obvalorid2:
+    ;Obtener el valor del id
+    inc si 
+    inc si
+    inc si
+    mov dh, arrayescritura[si]
+    Limpiararr Opera2
+    valid2
+    inc si
+    jmp Operar
 ObDigito:
     xor cx,cx
     inc si
@@ -661,5 +690,157 @@ guasalir:
     inc cx
     mov contval[0],cl
     pop si
+pop si
+endm
+
+valid macro
+Local ini, Buscaotroid, Otroid, mostrarids, mostarprimero, Mostarvarios, Puntoinc, Sl
+xor cx,cx
+mov arrtem[0],0
+xor ax,ax
+ini:
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,34   ;todos son iguales y llama a generar reporte
+        je mostrarids
+    push si
+    mov si,cx
+    inc cx
+    mov ah, ids[si]
+    pop si
+    cmp ah, 59
+        je Otroid
+    cmp ah, 36
+        je Sl
+    cmp dh,ah
+        je ini
+    
+    jmp Buscaotroid
+Buscaotroid:
+    push si
+    mov si,cx
+    inc cx
+    mov ah, ids[si]
+    pop si
+    cmp ah, 59
+        je Otroid
+    cmp ah, 36
+        je Sl
+    jmp Buscaotroid
+Otroid:
+    mov dh, arrtem[0]
+    inc dh
+    mov arrtem[0],dh
+    jmp ini
+mostrarids:
+    push si
+    xor si,si 
+    xor cx,cx
+    cmp arrtem[0],0
+        je mostarprimero
+    jmp Mostarvarios    
+mostarprimero:
+    mov dh, valoresu[si]
+    cmp dh,59
+        je Sl
+
+    push si
+    mov si,cx
+    inc cx
+    mov Opera1[si],dh
+    pop si
+
+    inc si
+    jmp mostarprimero
+Mostarvarios:
+    mov dh, valoresu[si]
+    inc si
+    cmp dh,59
+        je Puntoinc
+    jmp Mostarvarios
+Puntoinc:
+    mov dh, arrtem[0]
+    dec dh
+    mov arrtem[0],dh
+    cmp arrtem[0],0
+        je mostarprimero
+    jmp Mostarvarios
+Sl:
+pop si
+endm
+
+valid2 macro
+Local ini, Buscaotroid, Otroid, mostrarids, mostarprimero, Mostarvarios, Puntoinc, Sl
+xor cx,cx
+mov arrtem[0],0
+xor ax,ax
+ini:
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,34   ;todos son iguales y llama a generar reporte
+        je mostrarids
+    push si
+    mov si,cx
+    inc cx
+    mov ah, ids[si]
+    pop si
+    cmp ah, 59
+        je Otroid
+    cmp ah, 36
+        je Sl
+    cmp dh,ah
+        je ini
+    
+    jmp Buscaotroid
+Buscaotroid:
+    push si
+    mov si,cx
+    inc cx
+    mov ah, ids[si]
+    pop si
+    cmp ah, 59
+        je Otroid
+    cmp ah, 36
+        je Sl
+    jmp Buscaotroid
+Otroid:
+    mov dh, arrtem[0]
+    inc dh
+    mov arrtem[0],dh
+    jmp ini
+mostrarids:
+    push si
+    xor si,si 
+    xor cx,cx
+    cmp arrtem[0],0
+        je mostarprimero
+    jmp Mostarvarios    
+mostarprimero:
+    mov dh, valoresu[si]
+    cmp dh,59
+        je Sl
+
+    push si
+    mov si,cx
+    inc cx
+    mov Opera2[si],dh
+    pop si
+
+    inc si
+    jmp mostarprimero
+Mostarvarios:
+    mov dh, valoresu[si]
+    inc si
+    cmp dh,59
+        je Puntoinc
+    jmp Mostarvarios
+Puntoinc:
+    mov dh, arrtem[0]
+    dec dh
+    mov arrtem[0],dh
+    cmp arrtem[0],0
+        je mostarprimero
+    jmp Mostarvarios
+Sl:
 pop si
 endm
