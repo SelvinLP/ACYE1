@@ -14,17 +14,66 @@ DatosPadre:
     mov dh, arrayescritura[si]
     push si
     mov si,cx
+    mov rutaexport[si],dh
     mov Objpadre[si],dh
     inc cx
     pop si
     inc si
     mov dh, arrayescritura[si]
     cmp dh,34
-        je InicioPrim ; Encontro "
+        je Itera ; Encontro "
     jmp DatosPadre
+Itera:
+    ;datos para la ruta
+    push si
+    mov si,cx
+    mov rutaexport[si],46
+    mov rutaexport[si+1],106
+    mov rutaexport[si+2],115
+    mov rutaexport[si+3],111
+    mov rutaexport[si+4],00h
+    pop si
+    inc si
+    jmp InicioPrim
 InicioPrim:
+    ;buscamos primer id 
+    xor cx,cx
+    inc si
+    mov dh, arrayescritura[si-1]
+    cmp dh, 34
+        je Primid ; Encontro "
+    jmp InicioPrim
+Primid:
+    mov dh, arrayescritura[si]
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],dh
+    inc cx
+    mov cont[0],cl
+    pop si
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,34
+        je LMetodo ; Encontro "
+    jmp Primid
+LMetodo:
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],59
+    inc cx
+    mov cont[0],cl
+    pop si
+    xor cx,cx
     inc si
     BucleRecono
+    imprimir Objpadre
+    imprimirchar 10
+    imprimir ids
+    imprimirchar 10
+    imprimir valoresu
+    imprimirchar 10
 pop ax
 endm
 
@@ -66,6 +115,7 @@ Opediv macro
     pop ax
     mov bx,ax
 	pop ax
+    cwd
     idiv bx
     ConvertirString Opera2
     imprimirchar 61
@@ -110,7 +160,11 @@ Binicio:
         je Cadenadiv
     cmp dh, 68  ;Posible div
         je Cadenadiv
-    jmp Ciclo
+    cmp dh, 73  ;Posible id 
+        je Cadenaid
+    cmp dh, 105  ;Posible id 
+        je Cadenaid
+    jmp Idguar
 Suma:
     mov ax,43
     push ax
@@ -135,6 +189,11 @@ Divis:
     xor ax,ax
     inc si
     jmp Ciclo
+VId:
+    ;Obtener el valor del id
+    imprimirchar dh
+
+    jmp Ciclo
 Cadenaadd:
     inc si
     mov dh, arrayescritura[si]
@@ -142,7 +201,25 @@ Cadenaadd:
         je Cadenaadd2
     cmp dh,68
         je Cadenaadd2
-    jmp Ciclo
+    jmp Noadd
+Noadd:
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],97
+    inc cx
+    mov cont[0],cl
+    pop si
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],dh
+    inc cx
+    mov cont[0],cl
+    pop si
+    inc si
+    mov dh, arrayescritura[si]
+    jmp Idguar
 Cadenaadd2:
     inc si
     mov dh, arrayescritura[si]
@@ -158,7 +235,25 @@ Cadenasub:
         je Cadenasub2
     cmp dh,85
         je Cadenasub2
-    jmp Ciclo
+    jmp Nosub
+Nosub:
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],115
+    inc cx
+    mov cont[0],cl
+    pop si
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],dh
+    inc cx
+    mov cont[0],cl
+    pop si
+    inc si
+    mov dh, arrayescritura[si]
+    jmp Idguar
 Cadenasub2:
     inc si
     mov dh, arrayescritura[si]
@@ -174,7 +269,25 @@ Cadenamult:
         je Cadenamult2
     cmp dh,85
         je Cadenamult2
-    jmp Ciclo
+    jmp nomul
+nomul:
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],109
+    inc cx
+    mov cont[0],cl
+    pop si
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],dh
+    inc cx
+    mov cont[0],cl
+    pop si
+    inc si
+    mov dh, arrayescritura[si]
+    jmp Idguar
 Cadenamult2:
     inc si
     mov dh, arrayescritura[si]
@@ -190,7 +303,25 @@ Cadenadiv:
         je Cadenadiv2
     cmp dh,73
         je Cadenadiv2
-    jmp Ciclo
+    jmp nodiv
+nodiv:
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],100
+    inc cx
+    mov cont[0],cl
+    pop si
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],dh
+    inc cx
+    mov cont[0],cl
+    pop si
+    inc si
+    mov dh, arrayescritura[si]
+    jmp Idguar
 Cadenadiv2:
     inc si
     mov dh, arrayescritura[si]
@@ -199,6 +330,33 @@ Cadenadiv2:
     cmp dh,86
         je Divis
     jmp Ciclo
+Cadenaid:
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,68
+        je VId
+    cmp dh,100
+        je VId
+    jmp Noid
+Noid:
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],105
+    inc cx
+    mov cont[0],cl
+    pop si
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],dh
+    inc cx
+    mov cont[0],cl
+    pop si
+    inc si
+    mov dh, arrayescritura[si]
+    jmp Idguar
+    jmp Idguar
 Digito:
     xor cx,cx
     inc si
@@ -439,10 +597,69 @@ Valordigitoter:
         je Valordigito
     jmp Operar
 
-
+Idguar:
+    mov dh, arrayescritura[si]
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],dh
+    inc cx
+    mov cont[0],cl
+    pop si
+    inc si
+    mov dh, arrayescritura[si]
+    cmp dh,34
+        je Guardoid ; Encontro "
+    jmp Idguar
+Guardoid:
+    ;Guardo valor anterior
+    guardarv
+    push si
+    mov cl,cont[0]
+    mov si,cx
+    mov ids[si],59
+    inc cx
+    mov cont[0],cl
+    pop si
+    Limpiararr Opera2
+    xor ax,ax
+    push ax
+    jmp Ciclo
 Ciclo:
     xor cx,cx
     inc si
     cmp si, SIZEOF arrayescritura
     	jne Iniciocl
+;Guardo el ultimo valor
+guardarv
+endm
+
+guardarv macro 
+LOCAL guarini, guasalir
+push si
+xor si,si
+xor cx,cx
+guarini:
+    mov dh,Opera2[si]
+    cmp dh,36
+        je guasalir
+    push si
+    mov cl,contval[0]
+    mov si,cx
+    mov valoresu[si],dh
+    inc cx
+    mov contval[0],cl
+    pop si
+    inc si
+    
+    jmp guarini
+guasalir:
+    push si
+    mov cl,contval[0]
+    mov si,cx
+    mov valoresu[si],59
+    inc cx
+    mov contval[0],cl
+    pop si
+pop si
 endm

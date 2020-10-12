@@ -138,3 +138,16 @@ Local LCiclo, LSalir
 	LSalir:
 	xor cx,cx
 endm
+
+
+;-- FECHA Y HORA --
+ObtenerFecha macro
+mov ah,2ah
+int 21h
+endm
+
+
+ObtenerHora macro
+mov ah,2ch
+int 21h
+endm

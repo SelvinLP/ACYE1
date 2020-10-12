@@ -1,0 +1,36 @@
+{
+	"Reporte":
+	{
+		"alumno":
+		{
+			"Nombre":"Selvin Lisandro Aragon Perez"
+			"Carnet":"201701133"
+			"Seccion":"A"
+			"Curso":"Arquitectura de Computadores y Ensambladores 1"
+		},
+		"Fecha":
+		{
+			"Dia":13
+			"Mes":10
+			"Año":2020
+		},
+		"Hora":
+		{
+			"Hora":20
+			"Minutos":23
+			"Segundos":12
+		},
+		"opera":
+		[
+			{
+				"operacion1":30
+			}
+			{
+				"operacion2":6
+			}
+			{
+				"op":21
+			}
+		]
+	}
+}
