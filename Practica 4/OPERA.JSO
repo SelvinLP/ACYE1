@@ -16,9 +16,17 @@
 		},
 		"Hora":
 		{
-			"Hora":20
-			"Minutos":23
-			"Segundos":12
+			"Hora":22
+			"Minutos":53
+			"Segundos":37
+		},
+		"Resultados":
+		{
+			"Media":28
+			"Mediana":28
+			"Moda":
+			"Menor":
+			"Mayor":
 		},
 		"opera":
 		[
@@ -26,10 +34,10 @@
 				"operacion1":30
 			}
 			{
-				"operacion2":6
+				"operacion2":15
 			}
 			{
-				"op":21
+				"ok":41
 			}
 		]
 	}

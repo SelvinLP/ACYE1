@@ -29,7 +29,6 @@ cont db 2 dup(0)
 contval db 2 dup(0)
 tiempo db '00:00:00'
 
-
 arrtem db 1 dup(0)
 arrtemid db 100 dup ('$')
 ;Reporte
@@ -52,6 +51,15 @@ rep3 db 0ah,9h,9h,'"Hora":',
 	0ah,9h,9h,9h,'"Minutos":','00',
 	0ah,9h,9h,9h,'"Segundos":','00',
 	0ah,9h,9h,'},'
+repres db 0ah,9h,9h,'"Resultados":',
+	0ah,9h,9h,'{',
+	0ah,9h,9h,9h,'"Media":'
+remediana db 0ah,9h,9h,9h,'"Mediana":'
+remoda db 0ah,9h,9h,9h,'"Moda":'
+remenor db 0ah,9h,9h,9h,'"Menor":'
+remayor db 0ah,9h,9h,9h,'"Mayor":'
+
+llavedpe db 0ah,9h,9h,'},'
 rcomillatb db 0ah,9h,9h,'"'
 rcomillatb2 db 0ah,9h,9h,9h,9h,'"'
 rcomilla db '":'
