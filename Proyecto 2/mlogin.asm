@@ -5,13 +5,26 @@ Limpiararr tempass
 Inicio:
     imprimir ingreusu
     obtenertexto temusuario
-    imprimir ingrepass
+	Comp_cad usuadmin, temusuario, bandcomp
+	cmp bandcomp, 1
+		je pedirpassadm
+	;comprobacion de usuarios
+	imprimir ingrepass
     obtenertexto tempass
-    Comp_cad 
-
+	cmpusuariolg
+	cmp bandcomp, 1
+		je mostrarjuego
     jmp lgsalir 
+pedirpassadm:
+	imprimir ingrepass
+    obtenertexto tempass
+	Comp_cad passadmin, tempass, bandcomp
+	cmp bandcomp, 1
+		je lgadmin
+	jmp lgsalir
 lgadmin:
     imprimir encabezadoadmin
+	obtenerchar
     cmp al,49
 		je toppuntos
 	cmp al,50
@@ -20,28 +33,82 @@ lgadmin:
 		je lgsalir
     jmp lgadmin
 toppuntos:
-    jmp lgsalir
+	;reporte
+	topuntos
+    jmp lgadmin
 toptiempos:
-    jmp lgsalir 
+	;reporte
+	toptime
+    jmp lgadmin 
+mostrarjuego:
+	imprimir temjuego
+	jmp lgsalir
 lgsalir:
 pop ax
 endm
 
-Comp_cad macro cad1, cad2
-local cmpinicio, cmpfalse, cmpfin
+cmpusuariolg macro 
+push ax
+Limpiararr arrtem
+xor cx,cx
 xor dx,dx
-cmpinicio:
-	mov cx, SIZEOF cad1 - 1
-	mov ax,ds
-	mov es,ax
-	Lea si, cad1
-	Lea di, cad2
-	repe cmpsb
-	jne cmpfalse
-	mov dx, 0001h
-	jmp cmpfin
-cmpfalse:
-	mov dx, 0000h
-	jmp cmpfin 
-cmpfin:		
+xor si,si
+mov bandcomp,0
+lginicio:
+    mov dh,ususypass[si]
+    cmp dh, 58              ;validacion de :
+        je lgvalidar
+    cmp dh, 36              ;validacion de $
+        je lgsalida
+    push si
+    mov si,cx
+    inc cx
+    mov arrtem[si],dh
+    pop si
+    inc si
+    jmp lginicio
+lgvalidar:
+    push si
+    push cx 
+    Comp_cad temusuario, arrtem, bandcomp
+    pop cx
+    pop si
+	cmp bandcomp, 1
+		je lgverpass
+    jmp lgbuscarotroid
+lgbuscarotroid:
+    inc si
+    mov dh,ususypass[si]
+    cmp dh, 59              ;validacion de ;
+        je lgrepitebusqueda
+    jmp lgbuscarotroid
+lgrepitebusqueda:
+	Limpiararr arrtem
+    inc si
+    jmp lginicio
+lgverpass:
+	mov bandcomp,0
+	Limpiararr arrtem
+    inc si
+	jmp lgobtenerpass
+lgobtenerpass:
+	mov dh,ususypass[si]
+    cmp dh, 59              ;validacion de ;
+        je lgconfpass
+	push si
+    mov si,cx
+    inc cx
+    mov arrtem[si],dh
+    pop si
+	inc si
+	jmp lgobtenerpass
+lgconfpass:
+	push si
+    push cx 
+    Comp_cad tempass, arrtem, bandcomp
+    pop cx
+    pop si
+	jmp lgsalida
+lgsalida:
+pop ax
 endm

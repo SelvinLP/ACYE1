@@ -2,6 +2,8 @@
 include mcontrol.asm
 include marchivo.asm
 include mlogin.asm
+include mregis.asm
+include mreport.asm
 ;--CODIGO --
 .model small 
 .stack 100h 
@@ -11,15 +13,33 @@ encabezado db 0ah,0dh,'UNIVERSIDAD SAN CARLOS DE GUATEMALA', 0ah,0dh, 'FACULDAD 
 encabezadomenu db 0ah,0dh,' ' ,0ah,0dh,'1) Ingresar ',0ah,0dh,'2) Registrar',0ah,0dh,'3) Salir','$'
 encabezadoadmin db 0ah,0dh,' ' ,0ah,0dh,'1) Top 10 puntos ',0ah,0dh,'2) Top 10 tiempos',0ah,0dh,'3) Salir','$'
 ingreruta db 0ah,0dh,'Ingrese ruta: ','$'
+gdusuario db 0ah,0dh,'Usuario Guardado Correctamente ','$'
 ingreusu db 0ah,0dh,'Ingrese Usuario: ','$'
-ingrepass db 0ah,0dh,'Ingrese Contraseña: ','$'
+ingrepass db 0ah,0dh,'Ingrese Password: ','$'
 usuadmin db 'adminBI','$'
 passadmin db '4321','$'
 temusuario db 15 dup('$')
 tempass db 15 dup('$')
 tiempo db '00:00:00'
-bandcomp db 0
+bandcomp db '0'
+ususypass db 300 dup('$')
 ;Reporte
+rutapuntos db 'Puntos.rep',00h
+rutatiempo db 'Tiempo.rep',00h
+arrayescritura db 5000 dup('$')
+handleFichero dw ?  
+handleFichero2 dw ?  
+repenc db 0ah,'UNIVERSIDAD SAN CARLOS DE GUATEMALA', 0ah,'FACULDAD DE INGENIERIA', 0ah,'ARQUITECTURA DE COMPUTADORES Y ENSAMBLADORES 1 ',
+				0ah,'NOMBRE: SELVIN LISANDRO ARAGON PEREZ ',0ah,'CARNET: 201701133 ', 0ah,'SECCION: A '
+replimea db 0ah,'-----------------------------------------------------------------------------------------'
+reptoptime db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 TIEMPOS'
+reptoppunt db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 PUNTOS'
+;Errores
+errlimit db 0ah,0dh,'Limite de Caracteres superados','$'
+errusu db 0ah,0dh,'El usuario ya existe','$'
+;temporales
+arrtem db 20 dup('$')
+temjuego db 0ah,0dh,'Juego: ','$'
 .code 
 
 main proc
@@ -38,6 +58,7 @@ main proc
         Login
 		jmp MenuPrincipal
 	Registrar:
+        registrousu
 		jmp MenuPrincipal
 	Salir: 
 		MOV ah,4ch 

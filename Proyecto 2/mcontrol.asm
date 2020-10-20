@@ -31,9 +31,9 @@ obtenertexto macro arraytem
 LOCAL Valor,Salida
 PUSH SI
 PUSH AX
-
 xor si,si
 Valor:
+add cx,1
 obtenerchar
 cmp al,0dh
 je Salida
@@ -150,4 +150,24 @@ endm
 ObtenerHora macro
 mov ah,2ch
 int 21h
+endm
+
+;Comparacion
+Comp_cad macro cad1, cad2, flag
+local cmpinicio, cmpfalse, cmpfin
+xor dx,dx
+cmpinicio:
+	mov cx, SIZEOF cad1 - 1
+	mov ax,ds
+	mov es,ax
+	Lea si, cad1
+	Lea di, cad2
+	repe cmpsb
+	jne cmpfalse
+	mov flag, 1
+	jmp cmpfin
+cmpfalse:
+	mov flag, 0
+	jmp cmpfin 
+cmpfin:		
 endm
