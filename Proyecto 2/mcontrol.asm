@@ -171,3 +171,36 @@ cmpfalse:
 	jmp cmpfin 
 cmpfin:		
 endm
+
+Delay macro constante
+local dl1, dl2, dlsalir
+push si
+push di
+mov si,constante
+dl1:
+	dec si
+	jz dlsalir
+	mov di,constante
+dl2:
+	dec di
+	jnz dl2
+	jmp dl1
+dlsalir:
+pop di
+pop si
+endm
+
+Sonido macro
+mov al, 86h
+out 43h, al
+mov ax, (1193180 / hz) ;numero de hz
+out 42h, al
+mov al, ah
+out 42h, al
+in al, 00000011b
+out 61h, al 
+Delay tiempo ; tiempo que queremos que suene
+in al, 61h 
+and al, 11111100b
+out 61h, al
+endm

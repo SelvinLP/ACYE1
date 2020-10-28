@@ -4,6 +4,7 @@ include marchivo.asm
 include mlogin.asm
 include mregis.asm
 include mreport.asm
+include mjuego.asm
 ;--CODIGO --
 .model small 
 .stack 100h 
@@ -20,7 +21,7 @@ usuadmin db 'adminBI','$'
 passadmin db '4321','$'
 temusuario db 15 dup('$')
 tempass db 15 dup('$')
-tiempo db '00:00:00'
+tiempo db '0'
 bandcomp db '0'
 ususypass db 300 dup('$')
 ;Reporte
@@ -34,6 +35,13 @@ repenc db 0ah,'UNIVERSIDAD SAN CARLOS DE GUATEMALA', 0ah,'FACULDAD DE INGENIERIA
 replimea db 0ah,'-----------------------------------------------------------------------------------------'
 reptoptime db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 TIEMPOS'
 reptoppunt db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 PUNTOS'
+;Juego
+pospelotax db ?
+pospelotay db ?
+dirperlotax db ?
+dirperlotay db ?
+posjugador db '00'
+color db 10
 ;Errores
 errlimit db 0ah,0dh,'Limite de Caracteres superados','$'
 errusu db 0ah,0dh,'El usuario ya existe','$'

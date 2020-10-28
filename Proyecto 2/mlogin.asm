@@ -42,6 +42,7 @@ toptiempos:
     jmp lgadmin 
 mostrarjuego:
 	imprimir temjuego
+    juego
 	jmp lgsalir
 lgsalir:
 pop ax
