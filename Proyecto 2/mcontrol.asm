@@ -190,17 +190,19 @@ pop di
 pop si
 endm
 
-Sonido macro
-mov al, 86h
-out 43h, al
-mov ax, (1193180 / hz) ;numero de hz
-out 42h, al
-mov al, ah
-out 42h, al
-in al, 00000011b
-out 61h, al 
-Delay tiempo ; tiempo que queremos que suene
-in al, 61h 
-and al, 11111100b
-out 61h, al
+Sound macro hz
+	mov al, 86h
+	out 43h, al
+	mov ax, (1193180 / hz) ;numero de hz
+	out 42h, al
+	mov al, ah
+	out 42h, al 
+	in al, 61h
+	or al, 00000011b
+	out 61h, al
+	delay tiempo ;mando a ejecutar el delay para que se escuche el sonido por varios segundos
+	 ; apagar la bocina
+	in al, 61h
+	and al, 11111100b
+	out 61h, al
 endm

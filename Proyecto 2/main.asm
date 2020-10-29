@@ -19,8 +19,6 @@ ingreusu db 0ah,0dh,'Ingrese Usuario: ','$'
 ingrepass db 0ah,0dh,'Ingrese Password: ','$'
 usuadmin db 'adminBI','$'
 passadmin db '4321','$'
-temusuario db 15 dup('$')
-tempass db 15 dup('$')
 tiempo db '0'
 bandcomp db '0'
 ususypass db 300 dup('$')
@@ -36,18 +34,37 @@ replimea db 0ah,'---------------------------------------------------------------
 reptoptime db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 TIEMPOS'
 reptoppunt db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 PUNTOS'
 ;Juego
+teclaguard db ?
 pospelotax db ?
 pospelotay db ?
 dirperlotax db ?
 dirperlotay db ?
-posjugador db '00'
-color db 10
+posjugador1 db ?
+posjugador2 db ?
+;Bloques
+bloq1 db ?
+bloq2 db ?
+bloq3 db ?
+bloq4 db ?
+bloq5 db ?
+bloq6 db ?
+bloq7 db ?
+bloq8 db ?
+bloq9 db ?
+bloq10 db ?
 ;Errores
 errlimit db 0ah,0dh,'Limite de Caracteres superados','$'
 errusu db 0ah,0dh,'El usuario ya existe','$'
 ;temporales
 arrtem db 20 dup('$')
 temjuego db 0ah,0dh,'Juego: ','$'
+temusuario db 15 dup('$')
+tempass db 15 dup('$')
+temnivel db 'N1','$'
+tempuntos db 5 dup('$')
+temtiempo db 5 dup('$')
+bandera db ?
+bandera2 db ?
 .code 
 
 main proc
