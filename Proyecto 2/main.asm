@@ -22,6 +22,9 @@ passadmin db '4321','$'
 tiempo db '0'
 bandcomp db '0'
 ususypass db 300 dup('$')
+usuytiempo db 300 dup('$')
+usuypuntos db 300 dup('$')
+pospuntosytiempo db '?'
 ;Reporte
 rutapuntos db 'Puntos.rep',00h
 rutatiempo db 'Tiempo.rep',00h
@@ -41,6 +44,7 @@ dirperlotax db ?
 dirperlotay db ?
 posjugador1 db ?
 posjugador2 db ?
+puntos db ?
 ;Bloques
 bloq1 db ?
 bloq2 db ?
@@ -65,9 +69,11 @@ tempuntos db 5 dup('$')
 temtiempo db 5 dup('$')
 bandera db ?
 bandera2 db ?
+quitarbloque db ?
 .code 
 
 main proc
+    mov pospuntosytiempo,0  ;contador 
 	MenuPrincipal:
 		imprimir encabezado 
 		imprimir encabezadomenu

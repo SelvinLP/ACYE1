@@ -19,23 +19,22 @@ mov dirperlotax,1
 mov dirperlotay,0
 mov posjugador1 ,15
 mov posjugador2 ,20
-mov ax,cx
-ConvertirString tempuntos
-mov ax,si
-ConvertirString temtiempo
+mov puntos ,0
 Modografico
 pintar_bloque 22,posjugador1,22,posjugador2,15
 print temusuario,0,0,15
 print temnivel,13,0,15
+pintarborde
 
 jjinicio:
 	;Encabezado
-	mov ax,cx
+	mov cl, puntos
+	mov ax, cx
 	ConvertirString tempuntos
 	mov ax,si
 	ConvertirString temtiempo
 	print tempuntos,24,0,15
-	print temtiempo,34,0,15
+	print temtiempo,36,0,15
 	;movimientos
 	bloquespuntos
 	mov teclaguard,4
@@ -70,60 +69,70 @@ inctiempo:
 	add si,1
 	jmp jjinicio
 jsalida:
+;guardamos valores en array
 Modotexto
+mov ax,si
+guardartimeopuntos usuytiempo, ax
+imprimir usuytiempo
+imprimirchar 33
+xor ax,ax
+mov al, puntos
+guardartimeopuntos usuypuntos, ax
+imprimir usuypuntos
+
+
 endm
 
 bloquespuntos macro
-blinicio:
 	cmp bloq1,0
-		jne pintarblqq1
-pintarblqq1:
+		je pintarblqq2
 	pintar_bloque 3,2,3,7,2
-	cmp bloq2,0
-		jne pintarblqq2
-	jmp pintarblqq3
+	jmp pintarblqq2
 pintarblqq2:
+	cmp bloq2,0
+		je pintarblqq3
 	pintar_bloque 3,9,3,14,1
-	cmp bloq3,0
-		jne pintarblqq3
-	jmp pintarblqq4
+	jmp pintarblqq3
 pintarblqq3:
+	cmp bloq3,0
+		je pintarblqq4
 	pintar_bloque 3,16,3,21,3
-	cmp bloq4,0
-		jne pintarblqq4
-	jmp pintarblqq5
+	jmp pintarblqq4
 pintarblqq4:
+	cmp bloq4,0
+		je pintarblqq5
 	pintar_bloque 3,23,3,28,4
-	cmp bloq5,0
-		jne pintarblqq5
-	jmp pintarblqq6
+	jmp pintarblqq5
 pintarblqq5:
+	cmp bloq5,0
+		je pintarblqq6
 	pintar_bloque 3,30,3,35,5
-	cmp bloq6,0
-		jne pintarblqq6
-	jmp pintarblqq7
+	jmp pintarblqq6
 pintarblqq6:
+	cmp bloq6,0
+		je pintarblqq7
 	pintar_bloque 5,2,5,7,6
-	cmp bloq7,0
-		jne pintarblqq7
-	jmp pintarblqq8
+	jmp pintarblqq7
 pintarblqq7:
+	cmp bloq7,0
+		je pintarblqq8
 	pintar_bloque 5,9,5,14,7
-	cmp bloq8,0
-		jne pintarblqq8
-	jmp pintarblqq9
+	jmp pintarblqq8
 pintarblqq8:
+	cmp bloq8,0
+		je pintarblqq9
 	pintar_bloque 5,16,5,21,8
-	cmp bloq9,0
-		jne pintarblqq9
-	jmp pintarblqq10
+	jmp pintarblqq9
 pintarblqq9:
+	cmp bloq9,0
+		je pintarblqq10
 	pintar_bloque 5,23,5,28,9
-	cmp bloq10,0
-		jne pintarblqq10
-	jmp blsalirp
+	jmp pintarblqq10
 pintarblqq10:
+	cmp bloq10,0
+		je blsalirp
 	pintar_bloque 5,30,5,35,10
+	jmp blsalirp	
 blsalirp:
 endm
 
@@ -137,14 +146,14 @@ mvjinicio:
 movizq:
 	cmp posjugador1, 1
 		je mvjsalir
-	sub posjugador1, 1
-	sub posjugador2, 1
+	sub posjugador1, 2
+	sub posjugador2, 2
 	jmp mvjsalir
 movder:
 	cmp posjugador2, 38
 		je mvjsalir
-	add posjugador1, 1
-	add posjugador2, 1
+	add posjugador1, 2
+	add posjugador2, 2
 	jmp mvjsalir
 mvjsalir:
 	pintar_bloque 22,posjugador1,22,posjugador2,15
@@ -184,6 +193,23 @@ vly:
         je dirY
 	cmp pospelotay, 21
 		je mvvjug
+	;bloques
+	cmp pospelotay, 5
+		je comprobacionbl1
+	cmp pospelotay, 3
+		je comprobacionbl2
+	jmp cambiodiry
+comprobacionbl1:
+	validbloqpelota 
+	cmp quitarbloque,1
+		je dirY
+	jmp cambiodiry
+comprobacionbl2:
+	validbloqpelota2
+	cmp quitarbloque,1
+		je dirY
+	jmp cambiodiry
+cambiodiry: 
     cmp dirperlotay, 1
         je incy
     cmp dirperlotay, 0
@@ -211,15 +237,185 @@ mvjperdio:
 mvvjug:
 	mov al, posjugador1
 	cmp al, dl
-	jle valid2
+		jle valid2
 	jmp mvjperdio
 valid2:
 	mov al, posjugador2
 	cmp dl, al
-	jle dirY
+		jle dirY
 	jmp mvjperdio
 mvsalir:
 pintar_bloque pospelotay,pospelotax,pospelotay,pospelotax,15
+endm
+
+validbloqpelota macro
+mov quitarbloque, 0
+vlbp6:
+	cmp bloq6,0
+		jne vl6
+	jmp vlbp7
+vl6:
+	mov al,2
+	cmp al,dl
+		jnle vlbp7
+	mov al,7
+	cmp dl,al
+		jnle vlbp7
+	pintar_bloque 5,2,5,7,0
+	mov bloq6,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbp7:
+	cmp bloq7,0
+		jne vl7
+	jmp vlbp8
+vl7:
+	mov al,9
+	cmp al,dl
+		jnle vlbp8
+	mov al,14
+	cmp dl,al
+		jnle vlbp8
+	pintar_bloque 5,9,5,14,0
+	mov bloq7,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbp8:
+	cmp bloq8,0
+		jne vl8
+	jmp vlbp9
+vl8:
+	mov al,16
+	cmp al,dl
+		jnle vlbp9
+	mov al,21
+	cmp dl,al
+		jnle vlbp9
+	pintar_bloque 5,16,5,21,0
+	mov bloq8,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbp9:
+	cmp bloq9,0
+		jne vl9
+	jmp vlbp10
+vl9:
+	mov al,23
+	cmp al,dl
+		jnle vlbp10
+	mov al,28
+	cmp dl,al
+		jnle vlbp10
+	pintar_bloque 5,23,5,28,0
+	mov bloq9,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbp10:
+	cmp bloq10,0
+		jne vl10
+	jmp vlbpsalida
+vl10:
+	mov al,30
+	cmp al,dl
+		jnle vlbpsalida
+	mov al,35
+	cmp dl,al
+		jnle vlbpsalida
+	pintar_bloque 5,30,5,35,0
+	mov bloq10,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbpsalida:
+endm
+
+validbloqpelota2 macro
+mov quitarbloque, 0
+vlbp1:
+	cmp bloq1,0
+		jne vl1
+	jmp vlbp2
+vl1:
+	mov al,2
+	cmp al,dl
+		jnle vlbp2
+	mov al,7
+	cmp dl,al
+		jnle vlbp2
+	pintar_bloque 3,2,3,7,0
+	mov bloq1,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbp2:
+	cmp bloq2,0
+		jne vl2
+	jmp vlbp3
+vl2:
+	mov al,9
+	cmp al,dl
+		jnle vlbp3
+	mov al,14
+	cmp dl,al
+		jnle vlbp3
+	pintar_bloque 3,9,3,14,0
+	mov bloq2,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbp3:
+	cmp bloq3,0
+		jne vl3
+	jmp vlbp4
+vl3:
+	mov al,16
+	cmp al,dl
+		jnle vlbp4
+	mov al,21
+	cmp dl,al
+		jnle vlbp4
+	pintar_bloque 3,16,3,21,0
+	mov bloq3,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbp4:
+	cmp bloq4,0
+		jne vl4
+	jmp vlbp5
+vl4:
+	mov al,23
+	cmp al,dl
+		jnle vlbp5
+	mov al,28
+	cmp dl,al
+		jnle vlbp5
+	pintar_bloque 3,23,3,28,0
+	mov bloq4,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbp5:
+	cmp bloq5,0
+		jne vl5
+	jmp vlbpsalida2
+vl5:
+	mov al,30
+	cmp al,dl
+		jnle vlbpsalida2
+	mov al,35
+	cmp dl,al
+		jnle vlbpsalida2
+	pintar_bloque 3,30,3,35,0
+	mov bloq5,0 
+	mov quitarbloque, 1
+	inc puntos
+	jmp vlbpsalida
+vlbpsalida2:
 endm
 
 pintar_bloque macro line_i, col_i, line_f, col_f, color
@@ -276,14 +472,14 @@ limpiarpantalla macro
 endm
 
 pixel macro x0, y0, color
-	push cx
+	push_registros
 	mov ah, 0ch
 	mov al, color
 	mov bh, 00h
 	mov dx, y0
 	mov cx, x0
 	int 10h
-	pop cx
+	pop_registros
 endm
 
 print macro char, x, y, color
@@ -344,6 +540,8 @@ obtener_direccion macro left
 	colocar_pausa:
 		mov ah, 10h
         int 16h
+		cmp al, 27
+			je SAL3
 		jmp SAL1
 	SAL2:
 		cmp al, 32
@@ -355,4 +553,98 @@ obtener_direccion macro left
 		mov left, 3
 	SAL1:
 	pop_registros
+endm
+
+pintarborde macro 
+push cx
+mov cx, 5
+bordeA:
+	pixel cx,10,15
+	inc cx
+	cmp cx, 315
+		jne bordeA
+	mov cx,10
+	jmp bordeI
+bordeI:
+	pixel 5,cx,15
+	inc cx
+	cmp cx, 195
+		jne bordeI
+	mov cx,5
+	jmp bordeB
+bordeB:
+	pixel cx,195,15
+	inc cx
+	cmp cx, 315
+		jne bordeB
+	mov cx,10
+	jmp bordeD
+bordeD:
+	pixel 315,cx,15
+	inc cx
+	cmp cx, 195
+		jne bordeD
+	jmp bordesalida
+bordesalida:
+pop cx
+endm
+
+guardartimeopuntos macro arr, valor
+local gtinicio, gtinsertusu, gtcambio, guardato, gtsalir
+Limpiararr arrtem
+xor si,si
+xor cx,cx
+xor dx,dx
+gtinicio:
+	push si
+    mov si,cx
+    mov dh, arr[si]
+    pop si
+    cmp dh, 36 ;Valida $
+        je gtinsertusu
+    inc cx
+    jmp gtinicio
+gtinsertusu:
+	mov dh, temusuario[si]
+    cmp dh, 36
+        je gtcambio
+    push si
+    mov si,cx
+    mov arr[si],dh
+    inc cx
+    pop si
+    inc si
+    jmp gtinsertusu
+gtcambio:
+	xor si,si
+    push si
+    mov si,cx
+    mov arr[si],58
+    inc cx
+    pop si
+	;pasamos el valor a un array
+	mov ax, valor
+	push cx
+	ConvertirString arrtem
+	pop cx
+    jmp guardato
+guardato:
+	mov dh, arrtem[si]
+    cmp dh, 36
+        je gtsalir
+    push si
+    mov si,cx
+    mov arr[si],dh
+    inc cx
+    pop si
+    inc si
+    jmp guardato
+gtsalir:
+    xor si,si
+    push si
+    mov si,cx
+    mov arr[si],59
+    inc cx
+    pop si
+
 endm
