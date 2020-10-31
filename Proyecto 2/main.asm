@@ -19,7 +19,6 @@ ingreusu db 0ah,0dh,'Ingrese Usuario: ','$'
 ingrepass db 0ah,0dh,'Ingrese Password: ','$'
 usuadmin db 'adminBI','$'
 passadmin db '4321','$'
-tiempo db '0'
 bandcomp db '0'
 ususypass db 300 dup('$')
 usuytiempo db 300 dup('$')
@@ -46,6 +45,7 @@ dirperlotay db ?
 posjugador1 db ?
 posjugador2 db ?
 puntos db ?
+tiempo db ?
 ;Bloques
 bloq1 db ?
 bloq2 db ?

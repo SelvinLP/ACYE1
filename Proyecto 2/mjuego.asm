@@ -19,7 +19,8 @@ mov dirperlotax,1
 mov dirperlotay,0
 mov posjugador1 ,15
 mov posjugador2 ,20
-mov puntos ,0
+mov puntos,0
+mov tiempo,0
 Modografico
 pintar_bloque 22,posjugador1,22,posjugador2,15
 print temusuario,0,0,15
@@ -31,7 +32,9 @@ jjinicio:
 	mov cl, puntos
 	mov ax, cx
 	ConvertirString tempuntos
-	mov ax,si
+	xor cx,cx
+	mov cl, tiempo
+	mov ax, cx
 	ConvertirString temtiempo
 	print tempuntos,24,0,15
 	print temtiempo,36,0,15
@@ -66,12 +69,13 @@ jsinicio:
 	jmp jjinicio
 inctiempo:
 	xor di,di
-	add si,1
+	inc tiempo
 	jmp jjinicio
 jsalida:
 ;guardamos valores en array
 Modotexto
-mov ax,si
+xor ax,ax
+mov al, tiempo
 guardartimeopuntos usuytiempo, ax
 imprimir usuytiempo
 imprimirchar 10
@@ -79,7 +83,6 @@ xor ax,ax
 mov al, puntos
 guardartimeopuntos usuypuntos, ax
 imprimir usuypuntos
-
 
 endm
 
@@ -350,7 +353,7 @@ vl1:
 	mov bloq1,0 
 	mov quitarbloque, 1
 	inc puntos
-	jmp vlbpsalida
+	jmp vlbpsalida2
 vlbp2:
 	cmp bloq2,0
 		jne vl2
@@ -366,7 +369,7 @@ vl2:
 	mov bloq2,0 
 	mov quitarbloque, 1
 	inc puntos
-	jmp vlbpsalida
+	jmp vlbpsalida2
 vlbp3:
 	cmp bloq3,0
 		jne vl3
@@ -382,7 +385,7 @@ vl3:
 	mov bloq3,0 
 	mov quitarbloque, 1
 	inc puntos
-	jmp vlbpsalida
+	jmp vlbpsalida2
 vlbp4:
 	cmp bloq4,0
 		jne vl4
@@ -398,7 +401,7 @@ vl4:
 	mov bloq4,0 
 	mov quitarbloque, 1
 	inc puntos
-	jmp vlbpsalida
+	jmp vlbpsalida2
 vlbp5:
 	cmp bloq5,0
 		jne vl5
@@ -414,7 +417,7 @@ vl5:
 	mov bloq5,0 
 	mov quitarbloque, 1
 	inc puntos
-	jmp vlbpsalida
+	jmp vlbpsalida2
 vlbpsalida2:
 endm
 
