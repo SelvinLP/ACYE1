@@ -33,15 +33,28 @@ lgadmin:
 		je lgsalir
     jmp lgadmin
 toppuntos:
+    imprimir tipoordenamiendo
+    obtenerchar
+	cmp al,49
+		je BubbleSort
+	cmp al,50
+		je QuickSort
+	cmp al,51
+		je ShellSort
 	;reporte
-	topuntos
+	;topuntos
+    jmp lgadmin
+BubbleSort:
+    jmp lgadmin
+QuickSort:
+    jmp lgadmin
+ShellSort:
     jmp lgadmin
 toptiempos:
 	;reporte
-	toptime
+	;toptime
     jmp lgadmin 
 mostrarjuego:
-	imprimir temjuego
     juego
 	jmp lgsalir
 lgsalir:
@@ -112,4 +125,10 @@ lgconfpass:
 	jmp lgsalida
 lgsalida:
 pop ax
+endm
+
+pasararray macro arr
+mov cont, 0
+Limpiararr arrtem
+
 endm

@@ -74,7 +74,7 @@ Modotexto
 mov ax,si
 guardartimeopuntos usuytiempo, ax
 imprimir usuytiempo
-imprimirchar 33
+imprimirchar 10
 xor ax,ax
 mov al, puntos
 guardartimeopuntos usuypuntos, ax

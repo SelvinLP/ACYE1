@@ -25,6 +25,7 @@ ususypass db 300 dup('$')
 usuytiempo db 300 dup('$')
 usuypuntos db 300 dup('$')
 pospuntosytiempo db '?'
+tipoordenamiendo db 0ah,0dh,' ' ,0ah,0dh,'1) Ordenamiento BubbleSort ',0ah,0dh,'2) Ordenamiento QuickSort',0ah,0dh,'3) Ordenamiento ShellSort','$'
 ;Reporte
 rutapuntos db 'Puntos.rep',00h
 rutatiempo db 'Tiempo.rep',00h
@@ -61,7 +62,6 @@ errlimit db 0ah,0dh,'Limite de Caracteres superados','$'
 errusu db 0ah,0dh,'El usuario ya existe','$'
 ;temporales
 arrtem db 20 dup('$')
-temjuego db 0ah,0dh,'Juego: ','$'
 temusuario db 15 dup('$')
 tempass db 15 dup('$')
 temnivel db 'N1','$'
@@ -70,6 +70,7 @@ temtiempo db 5 dup('$')
 bandera db ?
 bandera2 db ?
 quitarbloque db ?
+cont db ? ;contador de registros en el array
 .code 
 
 main proc
