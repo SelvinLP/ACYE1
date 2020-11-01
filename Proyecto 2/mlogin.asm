@@ -1,5 +1,5 @@
 Login macro
-push ax
+
 Limpiararr temusuario
 Limpiararr tempass
 Inicio:
@@ -45,6 +45,12 @@ toppuntos:
 	;topuntos
     jmp lgadmin
 BubbleSort:
+    ;Pasar de array a numerros
+    push_registros
+    pasararray usuypuntos
+    pop_registros
+    ;ordbubblesort ordarray
+    ;Grafica
     jmp lgadmin
 QuickSort:
     jmp lgadmin
@@ -58,7 +64,6 @@ mostrarjuego:
     juego
 	jmp lgsalir
 lgsalir:
-pop ax
 endm
 
 cmpusuariolg macro 
@@ -130,5 +135,86 @@ endm
 pasararray macro arr
 mov cont, 0
 Limpiararr arrtem
-
+xor cx,cx
+xor dx,dx
+xor si,si
+psinicio:
+    mov dh,arr[si]
+    cmp dh, 58              ;validacion de :
+        je psvobtenernum
+    cmp dh, 36              ;validacion de $
+        je psfin
+    inc si
+    jmp psinicio
+psvobtenernum:
+    inc si
+    mov dh,arr[si]
+    cmp dh, 59              ;validacion de ;
+        je psvalid
+    push si
+    mov si,cx
+    mov arrtem[si],dh
+    inc cx
+    pop si
+    jmp psvobtenernum
+psvalid:
+    CovertirAscii arrtem
+    push si
+    xor cx,cx
+    mov cl, cont
+    mov si, cx
+    mov ordarray[si],al
+    pop si
+    Limpiararr arrtem
+    xor cx,cx
+    inc cont
+    jmp psinicio
+psfin:
 endm
+
+ordbubblesort macro array
+mov cl,cont      
+dec cx
+nextscan:
+    pintargrafica array                
+    mov bx,cx
+    mov si,0 
+
+nextcomp:
+    mov al,array[si]
+    mov dl,array[si+1]
+    cmp al,dl
+        jnc noswap 
+    mov array[si],dl
+    mov array[si+1],al
+noswap: 
+    inc si
+    dec bx
+    jnz nextcomp
+    dec cx
+    cmp cx, 0
+        jne nextscan     
+endm 
+
+pintargrafica macro arrt
+mov teclaguard,4
+
+Modografico
+pintini:
+    print toppuntostitulo, 10,0,15
+    ;pintar numeros
+    mov al,arrt[0]
+    mov si,cx
+    ConvertirString arrtem
+    xor cx,si
+    print arrtem,12,20,15
+    pintarborde
+    mov ah, 10h
+	int 16h
+pintfin:
+Modotexto
+endm
+
+
+
+

@@ -17,6 +17,8 @@ ingreruta db 0ah,0dh,'Ingrese ruta: ','$'
 gdusuario db 0ah,0dh,'Usuario Guardado Correctamente ','$'
 ingreusu db 0ah,0dh,'Ingrese Usuario: ','$'
 ingrepass db 0ah,0dh,'Ingrese Password: ','$'
+toppuntostitulo db 'Top 10 Puntos','$'
+toptiempotitulo db 'Top 10 Tiempo','$'
 usuadmin db 'adminBI','$'
 passadmin db '4321','$'
 bandcomp db '0'
@@ -71,6 +73,7 @@ bandera db ?
 bandera2 db ?
 quitarbloque db ?
 cont db ? ;contador de registros en el array
+ordarray db 20 dup('$')
 .code 
 
 main proc

@@ -1,5 +1,5 @@
 juego macro
-local jinicio
+push_registros
 xor cx,cx
 xor si,si
 xor di,di ;contador del tiempo
@@ -23,7 +23,7 @@ mov puntos,0
 mov tiempo,0
 Modografico
 pintar_bloque 22,posjugador1,22,posjugador2,15
-print temusuario,0,0,15
+print temusuario,1,0,15
 print temnivel,13,0,15
 pintarborde
 
@@ -83,7 +83,7 @@ xor ax,ax
 mov al, puntos
 guardartimeopuntos usuypuntos, ax
 imprimir usuypuntos
-
+pop_registros
 endm
 
 bloquespuntos macro
@@ -438,13 +438,17 @@ endm
 
 Modografico macro 
     ;Modo video
+	push_registros
     mov ax, 0013h
     int 10h
+	pop_registros
 endm
 
 Modotexto macro
+	push_registros
 	mov ax, 0003h
 	int 10h
+	pop_registros
 endm
 
 push_registros macro
@@ -487,7 +491,6 @@ endm
 
 print macro char, x, y, color
 	local loop_print, fin_print
-	
 	push_registros
 
 	mov di, 0
@@ -559,6 +562,7 @@ obtener_direccion macro left
 endm
 
 pintarborde macro 
+local bordeA, bordeI, bordeB, bordeD, bordesalida
 push cx
 mov cx, 5
 bordeA:
