@@ -41,20 +41,19 @@ toppuntos:
 		je QuickSort
 	cmp al,51
 		je ShellSort
-	;reporte
-	;topuntos
     jmp lgadmin
 BubbleSort:
     ;Pasar de array a numerros
-    push_registros
     pasararray usuypuntos
-    pop_registros
-    ;ordbubblesort ordarray
     ;Grafica
+    ordbubblesort ordarray
+    topuntos
     jmp lgadmin
 QuickSort:
+    topuntos
     jmp lgadmin
 ShellSort:
+    topuntos
     jmp lgadmin
 toptiempos:
 	;reporte
@@ -133,11 +132,11 @@ pop ax
 endm
 
 pasararray macro arr
-mov cont, 0
 Limpiararr arrtem
 xor cx,cx
 xor dx,dx
 xor si,si
+xor di,di
 psinicio:
     mov dh,arr[si]
     cmp dh, 58              ;validacion de :
@@ -158,61 +157,58 @@ psvobtenernum:
     pop si
     jmp psvobtenernum
 psvalid:
+    ;imprimir arrtem
+    ;imprimirchar 33
     CovertirAscii arrtem
-    push si
-    xor cx,cx
-    mov cl, cont
-    mov si, cx
-    mov ordarray[si],al
-    pop si
+    mov ordarray[di],al
     Limpiararr arrtem
     xor cx,cx
-    inc cont
+    inc di
+    ;
+    ;push si
+    ;dec cont
+    ;mov cl, cont
+    ;mov si, cx
+    ;mov al, ordarray[0]
+    ;pop si
+    ;ConvertirString arrtem
+    ;imprimir arrtem
     jmp psinicio
 psfin:
+mov cont,di
 endm
 
 ordbubblesort macro array
-mov cl,cont      
-dec cx
-nextscan:
-    pintargrafica array                
-    mov bx,cx
-    mov si,0 
-
-nextcomp:
-    mov al,array[si]
-    mov dl,array[si+1]
-    cmp al,dl
-        jnc noswap 
-    mov array[si],dl
-    mov array[si+1],al
-noswap: 
-    inc si
-    dec bx
-    jnz nextcomp
+mov dx, cont
+oloop:
+    mov cx, cont
+    lea si, array
+iloop:
+    mov al, [si]                 ; Because compare can't have both memory
+    cmp al, [si+1]
+        jl common                      ; if al is less than [si+1] Skip the below two lines for swapping.
+    xchg al, [si+1]
+    mov [si], al                    ; Coz we can't use two memory locations in xchg directly.
+common:
+    INC si
     dec cx
-    cmp cx, 0
-        jne nextscan     
+    cmp cx,0
+        jne iloop
+    dec dx
+    jnz oloop
 endm 
 
 pintargrafica macro arrt
-mov teclaguard,4
-
+;mov teclaguard,4
+;mov temcx,cl
 Modografico
+
 pintini:
-    print toppuntostitulo, 10,0,15
-    ;pintar numeros
-    mov al,arrt[0]
-    mov si,cx
-    ConvertirString arrtem
-    xor cx,si
-    print arrtem,12,20,15
-    pintarborde
     mov ah, 10h
 	int 16h
 pintfin:
 Modotexto
+;mov cl,temcx
 endm
 
 

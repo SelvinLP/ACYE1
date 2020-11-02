@@ -38,6 +38,10 @@ repenc db 0ah,'UNIVERSIDAD SAN CARLOS DE GUATEMALA', 0ah,'FACULDAD DE INGENIERIA
 replimea db 0ah,'-----------------------------------------------------------------------------------------'
 reptoptime db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 TIEMPOS'
 reptoppunt db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 PUNTOS'
+repencb db 'No',9h,9h,'|',9h,9h,9h,'Usuario  ',9h,9h,'|',9h,9h,9h,'T ',9h,9h,'|',9h,9h,9h,'P'
+reptab db 0ah,'|',9h,9h
+reptabd db 9h,9h,'|',9h,9h,9h
+repno db 2 dup('$')
 ;Juego
 teclaguard db ?
 pospelotax db ?
@@ -64,7 +68,9 @@ errlimit db 0ah,0dh,'Limite de Caracteres superados','$'
 errusu db 0ah,0dh,'El usuario ya existe','$'
 ;temporales
 arrtem db 20 dup('$')
-temusuario db 15 dup('$')
+temusuario db 9 dup('$')
+temrepdata db 2 dup('$')
+temprint db 2 dup('$')
 tempass db 15 dup('$')
 temnivel db 'N1','$'
 tempuntos db 5 dup('$')
@@ -72,8 +78,10 @@ temtiempo db 5 dup('$')
 bandera db ?
 bandera2 db ?
 quitarbloque db ?
-cont db ? ;contador de registros en el array
+cont dw ? ;contador de registros en el array
 ordarray db 20 dup('$')
+temcx db ?
+auxcont dw ?
 .code 
 
 main proc

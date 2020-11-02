@@ -1,5 +1,7 @@
 juego macro
 push_registros
+xor ax,ax
+xor bx,bx
 xor cx,cx
 xor si,si
 xor di,di ;contador del tiempo
@@ -448,6 +450,8 @@ Modotexto macro
 	push_registros
 	mov ax, 0003h
 	int 10h
+	;mov ax, @data
+	;mov ds, ax
 	pop_registros
 endm
 
