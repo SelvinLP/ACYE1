@@ -17,10 +17,16 @@ ingreruta db 0ah,0dh,'Ingrese ruta: ','$'
 gdusuario db 0ah,0dh,'Usuario Guardado Correctamente ','$'
 ingreusu db 0ah,0dh,'Ingrese Usuario: ','$'
 ingrepass db 0ah,0dh,'Ingrese Password: ','$'
+ingrevel db 0ah,0dh,'Ingrese nivel de velocidad: ','$'
 toppuntostitulo db 'Top 10 Puntos','$'
 toptiempotitulo db 'Top 10 Tiempo','$'
+generep db 0ah,0dh,'Generando Reporte','$'
+generepfin db 0ah,'Reporte Generado','$'
 usuadmin db 'adminBI','$'
 passadmin db '4321','$'
+ordBubbleSorttxt db 'Ord: BubbleSort ','$'
+ordQuickSorttxt db 'Ord: QuickSort ','$'
+ordShellSorttxt db 'Ord: ShellSort ','$'
 bandcomp db '0'
 ususypass db 300 dup('$')
 usuytiempo db 300 dup('$')
@@ -67,8 +73,10 @@ bloq10 db ?
 errlimit db 0ah,0dh,'Limite de Caracteres superados','$'
 errusu db 0ah,0dh,'El usuario ya existe','$'
 ;temporales
+temvelocidad db 'Vel: 1'
 arrtem db 20 dup('$')
 temusuario db 9 dup('$')
+temusuario2 db 9 dup('$')
 temrepdata db 2 dup('$')
 temprint db 2 dup('$')
 tempass db 15 dup('$')

@@ -46,19 +46,54 @@ BubbleSort:
     ;Pasar de array a numerros
     pasararray usuypuntos
     ;Grafica
-    ordbubblesort ordarray
+    push ax
+    imprimir ingrevel
+    obtenerchar
+    mov temvelocidad[5], al
+    pop ax
+    ordbubblesort ordarray, ordBubbleSorttxt
+    imprimir generep
     topuntos
+    imprimir generepfin
     jmp lgadmin
 QuickSort:
+    imprimir generep
     topuntos
+    imprimir generepfin
     jmp lgadmin
 ShellSort:
+    imprimir generep
     topuntos
+    imprimir generepfin
     jmp lgadmin
 toptiempos:
-	;reporte
-	;toptime
+	imprimir tipoordenamiendo
+    obtenerchar
+	cmp al,49
+		je BubbleSort2
+	cmp al,50
+		je QuickSort2
+	cmp al,51
+		je ShellSort2
     jmp lgadmin 
+BubbleSort2:
+    ;Pasar de array a numerros
+    pasararray usuytiempo
+    ;Grafica
+    imprimir generep
+    toptime
+    imprimir generepfin
+    jmp lgadmin
+QuickSort2:
+    imprimir generep
+    toptime
+    imprimir generepfin
+    jmp lgadmin
+ShellSort2:
+    imprimir generep
+    toptime
+    imprimir generepfin
+    jmp lgadmin
 mostrarjuego:
     juego
 	jmp lgsalir
@@ -132,6 +167,7 @@ pop ax
 endm
 
 pasararray macro arr
+local psinicio, psvobtenernum, psvalid, psfin
 Limpiararr arrtem
 xor cx,cx
 xor dx,dx
@@ -178,9 +214,14 @@ psfin:
 mov cont,di
 endm
 
-ordbubblesort macro array
+ordbubblesort macro array, titulo
+local oloop, iloop, common
+;nivel de velocidad
 mov dx, cont
 oloop:
+    push dx
+    pintargrafica array, titulo
+    pop dx
     mov cx, cont
     lea si, array
 iloop:
@@ -198,17 +239,31 @@ common:
     jnz oloop
 endm 
 
-pintargrafica macro arrt
-;mov teclaguard,4
-;mov temcx,cl
+pintargrafica macro arrt, titulo
+local pintini, pintfin, pintnumeros
+Limpiararr temrepdata
 Modografico
-
 pintini:
+    ;Titulo
+    print titulo, 1, 0,15
+    ;Puntos
+    print temvelocidad,18,0,15
+    pintarborde
+    xor di,cont
+    jmp pintnumeros
+pintnumeros:
+    dec di
+    ;mov al,arrt[si]
+    ;ConvertirString temrepdata
+    print temvelocidad,5,20,15 
+    xor si,si
+    cmp di,si
+        jne pintnumeros
+    jmp pintfin
+pintfin:
     mov ah, 10h
 	int 16h
-pintfin:
 Modotexto
-;mov cl,temcx
 endm
 
 

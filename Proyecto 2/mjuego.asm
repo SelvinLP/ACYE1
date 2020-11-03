@@ -269,7 +269,7 @@ vl6:
 	pintar_bloque 5,2,5,7,0
 	mov bloq6,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida
 vlbp7:
 	cmp bloq7,0
@@ -285,7 +285,7 @@ vl7:
 	pintar_bloque 5,9,5,14,0
 	mov bloq7,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida
 vlbp8:
 	cmp bloq8,0
@@ -301,7 +301,7 @@ vl8:
 	pintar_bloque 5,16,5,21,0
 	mov bloq8,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida
 vlbp9:
 	cmp bloq9,0
@@ -317,7 +317,7 @@ vl9:
 	pintar_bloque 5,23,5,28,0
 	mov bloq9,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida
 vlbp10:
 	cmp bloq10,0
@@ -333,7 +333,7 @@ vl10:
 	pintar_bloque 5,30,5,35,0
 	mov bloq10,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida
 vlbpsalida:
 endm
@@ -354,7 +354,7 @@ vl1:
 	pintar_bloque 3,2,3,7,0
 	mov bloq1,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida2
 vlbp2:
 	cmp bloq2,0
@@ -370,7 +370,7 @@ vl2:
 	pintar_bloque 3,9,3,14,0
 	mov bloq2,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida2
 vlbp3:
 	cmp bloq3,0
@@ -386,7 +386,7 @@ vl3:
 	pintar_bloque 3,16,3,21,0
 	mov bloq3,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida2
 vlbp4:
 	cmp bloq4,0
@@ -402,7 +402,7 @@ vl4:
 	pintar_bloque 3,23,3,28,0
 	mov bloq4,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida2
 vlbp5:
 	cmp bloq5,0
@@ -418,7 +418,7 @@ vl5:
 	pintar_bloque 3,30,3,35,0
 	mov bloq5,0 
 	mov quitarbloque, 1
-	inc puntos
+	add puntos,5
 	jmp vlbpsalida2
 vlbpsalida2:
 endm

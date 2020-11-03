@@ -1,4 +1,5 @@
 toptime macro
+local datosto1, totiempofin
 push ax
     Creararchivo rutatiempo,handleFichero
 	Abrirarchivo rutatiempo,handleFichero
@@ -7,7 +8,37 @@ push ax
     Escribirarchivo SIZEOF replimea, replimea,handleFichero
     Escribirarchivo SIZEOF reptoptime, reptoptime,handleFichero
     Escribirarchivo SIZEOF replimea, replimea,handleFichero
+    Escribirarchivo SIZEOF reptab, reptab,handleFichero
+    Escribirarchivo SIZEOF repencb,repencb,handleFichero
     ;top
+    mov auxcont,1
+    mov di,cont
+datosto1:
+ dec di
+    mov ax, di
+    inc auxcont
+    ConvertirString repno
+    Escribirarchivo SIZEOF reptab, reptab,handleFichero
+    Escribirarchivo SIZEOF repno, repno,handleFichero
+    Escribirarchivo SIZEOF reptabd, reptabd,handleFichero
+    ;valores
+    Limpiararr temprint
+    mov al,ordarray[di]
+    ConvertirString temprint
+    obtenervaloresrep usuytiempo, ordarray
+    obteneronlyv usuypuntos, temusuario
+
+    Escribirarchivo SIZEOF temusuario, temusuario, handleFichero
+    Escribirarchivo SIZEOF reptabd, reptabd,handleFichero
+    Escribirarchivo SIZEOF temprint, temprint,handleFichero
+    Escribirarchivo SIZEOF reptabd, reptabd,handleFichero
+    Escribirarchivo SIZEOF temrepdata, temrepdata,handleFichero
+
+    xor si,si
+    cmp di,si
+        jne datosto1
+    jmp totiempofin
+totiempofin:
     Escribirarchivo SIZEOF replimea, replimea,handleFichero
     Cerrararchivo handleFichero
 pop ax
@@ -27,10 +58,10 @@ push ax
     Escribirarchivo SIZEOF repencb,repencb,handleFichero2
     ;top
     mov auxcont,1
-    xor cx,cont
+    mov di,cont
 datostop:
-    dec cx
-    mov ax, auxcont
+    dec di
+    mov ax, di
     inc auxcont
     ConvertirString repno
     Escribirarchivo SIZEOF reptab, reptab,handleFichero2
@@ -38,16 +69,19 @@ datostop:
     Escribirarchivo SIZEOF reptabd, reptabd,handleFichero2
     ;valores
     Limpiararr temprint
-    mov di,cx
     mov al,ordarray[di]
     ConvertirString temprint
-    push cx
     obtenervaloresrep usuypuntos, ordarray
-    pop cx
+    ;obteneronlyv usuytiempo, temusuario
+
     Escribirarchivo SIZEOF temusuario, temusuario, handleFichero2
     Escribirarchivo SIZEOF reptabd, reptabd,handleFichero2
+    ;Escribirarchivo SIZEOF temrepdata, temrepdata,handleFichero2
+    Escribirarchivo SIZEOF reptabd, reptabd,handleFichero2
     Escribirarchivo SIZEOF temprint, temprint,handleFichero2
-    cmp cx,0
+
+    xor si,si
+    cmp di,si
         jne datostop
     jmp topuntosfin
 topuntosfin:
@@ -91,12 +125,6 @@ lgvalidarrep:
 comparardata:
     push si
     push cx 
-    imprimirchar 33
-    imprimir temrepdata
-    imprimirchar 33
-    imprimir temprint
-    imprimirchar 61
-    imprimir temusuario
     Comp_cad temprint, temrepdata, bandcomp
     pop cx
     pop si
@@ -110,5 +138,56 @@ repetirrep:
     xor di,di
     jmp obtnume
 obtenervaloresrepfin:
+pop di
+endm
+
+obteneronlyv macro arr,valor
+local obteneronlyvini, obteneronly1, clearrel, cmpusurep, cmpusurep2, repetirrep2, obteneronlyvfin
+push di
+obteneronlyvini:
+    Limpiararr temusuario2
+    Limpiararr temrepdata
+    xor si,si
+    xor di,di
+    mov bandcomp,0
+    jmp obteneronly1
+obteneronly1:
+    mov dh,arr[si]
+    cmp dh, 58              ;validacion de :
+       je clearrel
+    cmp dh, 36              ;validacion de $
+        je obteneronlyvfin
+    mov temusuario2[di],dh
+    inc di
+    inc si
+    jmp obteneronly1
+clearrel:
+    xor di,di
+    inc si
+    jmp cmpusurep
+cmpusurep:
+    mov dh,arr[si]
+    cmp dh, 59          ; validacion de ;
+        je cmpusurep2
+    mov temrepdata[di],dh
+    inc di
+    inc si
+    jmp cmpusurep
+cmpusurep2:
+    push si
+    push cx 
+    Comp_cad temusuario2, valor, bandcomp
+    pop cx
+    pop si
+    cmp bandcomp,1
+        je obteneronlyvfin
+    jmp repetirrep2
+repetirrep2:
+    Limpiararr temusuario2
+    Limpiararr temrepdata
+    inc si
+    xor di,di
+    jmp obteneronly1
+obteneronlyvfin:
 pop di
 endm
