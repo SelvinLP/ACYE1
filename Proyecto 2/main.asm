@@ -169,11 +169,17 @@ dato segment
 
 	tipo_orden db 1
 	hz dw 100
-	velocidad dw 1000
+	velocidad dw 2000
 	tamMin dw 0
 	tamMax dw 0
 	pivot dw 0
-
+	
+	;Reporte
+	repenc db 0ah,'UNIVERSIDAD SAN CARLOS DE GUATEMALA', 0ah,'FACULDAD DE INGENIERIA', 0ah,'ARQUITECTURA DE COMPUTADORES Y ENSAMBLADORES 1 ',
+				0ah,'NOMBRE: SELVIN LISANDRO ARAGON PEREZ ',0ah,'CARNET: 201701133 ', 0ah,'SECCION: A '
+	replimea db 0ah,'-----------------------------------------------------------------------------------------'
+	reptoptime db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 TIEMPOS'
+	reptoppunt db 0ah,9h,9h,9h,9h,9h,9h,9h,9h,9h,'TOP 10 PUNTOS'
 dato ends
 
 ;------------------------------------------------------
@@ -293,6 +299,10 @@ codigo segment
 							crear_archivo arch_puntos
 							movzx ax, var_count3
 							mov varword, ax
+							;escribir_archivo arch_tiempo, repenc, sizeof repenc
+							;escribir_archivo arch_tiempo, replimea, sizeof replimea
+							;escribir_archivo arch_tiempo, reptoppunt, sizeof reptoppunt
+							;escribir_archivo arch_tiempo, replimea, sizeof replimea
 							escribir_archivo arch_puntos, cadena_super, varword
 
 							pausa
@@ -342,6 +352,10 @@ codigo segment
 							crear_archivo arch_tiempo
 							movzx ax, var_count3
 							mov varword, ax
+							;escribir_archivo arch_tiempo, repenc, sizeof repenc
+							;escribir_archivo arch_tiempo, replimea, sizeof replimea
+							;escribir_archivo arch_tiempo, reptoptime, sizeof reptoptime
+							;escribir_archivo arch_tiempo, replimea, sizeof replimea
 							escribir_archivo arch_tiempo, cadena_super, varword
 
 							imprime cadena_super							
