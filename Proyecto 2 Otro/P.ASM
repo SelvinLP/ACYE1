@@ -12,12 +12,16 @@ dato segment
 			   DB 'FACULTAD DE INGENIERIA', 13, 10
 			   DB 'CIENCIAS Y SISTEMAS', 13, 10
 			   DB 'ARQUITECTURA DE COMPUTADORES Y ENSAMBLADORES 1', 13, 10
-			   DB 'NOMBRE: SELVIN LISANDRO ARAGON PEREZ', 13, 10
-			   DB 'CARNET: 201701133', 13, 10
+			   DB 'NOMBRE: CRISTIAN MANASES JUAREZ JUAREZ', 13, 10
+			   DB 'CARNET: 201700529', 13, 10
 			   DB 'SECCION: A', 13, 10, 13, 10, '$', '%'
 
 		MENU_INICIO DB '1) Ingresar ', 13, 10
 			   DB '2) Registrar', 13, 10
+			   DB '3) Salir', 13, 10, '$'
+
+		MENU_USER DB '1) Iniciar juego ', 13, 10
+			   DB '2) Cargar juego', 13, 10
 			   DB '3) Salir', 13, 10, '$'
 
 		MENU_ADMIN DB '1) Top 10 - puntos ', 13, 10
@@ -34,14 +38,14 @@ dato segment
 		TOP_TIEMPOS DB 13, 10, 'Top 10 - tiempos',13, 10, '$'
 		TITULO_PUNTOS DB 'CHART - PUNTOS$'
 		TITULO_TIEMPOS DB 'CHART - TIEMPOS$'
-		
+				 ;0123456789012345678901234567890123
 	linea_top db ' 1.   1234567   3   23', 13, 10, '$'
 
 	print_aux db ' ', 13, 10, '$'
 
 	;			 012345678
-	usuarios db 'adminAI', 700 dup('$')
-	passwords db '4321', 400 dup('$')
+	usuarios db 'admin$$', 700 dup('$')
+	passwords db '1234', 400 dup('$')
 	puntos db 0, 100 dup('$')
 	tiempos db 0, 100 dup('$')
 	niveles db 0, 100 dup('$')
@@ -60,24 +64,29 @@ dato segment
 	
 	;Mensajes
 		mensaje_continuar db 13, 10, 'Presione una tecla para continuar', 13, 10, '$'
-		msg_in_user db 13, 10, 'Ingrese usuario (7 caracteres)', 13, 10, '$'
+		msg_in_user db 13, 10, 'Ingrese nombre de usuario maximo 7 caracteres', 13, 10, '$'
 		msg_in_password db 13, 10, 'Ingrese contrase',164,'a numerica', 13, 10, '$'
 
 		msg_error_in_pass db 13, 10,'Solo se permiten numeros',13,10,'$'
 		msg_error_user_existe db 13, 10, 'El usuario ya existe', 13, 10, '$'
-		msg_exito_guardar db 13, 10, 'Usuario guardado correctamente', 13, 10, '$'
-		msg_user_not_found db 13, 10, 'Usuario no registrado', 13, 10, '$'
+		msg_exito_guardar db 13, 10, 'Usuario guardado con exito', 13, 10, '$'
+		msg_user_not_found db 13, 10, 'El usuario ingresado no se ha registrado aun', 13, 10, '$'
 		msg_pass_incorrect db 13, 10, 'Contrase', 164,'a incorrecta', 13, 10, '$'
+
+		msg_pedir_path db 13, 10, 'Ingrese ruta del archivo .play', 13, 10, '$'
 		msg_error_no_existe db 13, 10, 'Archivo no encontrado', 13, 10, '$'
 		msg_confirmacion_archivo db 13, 10, 'Archivo cargado', 13, 10, '$'
 		msg_pedir_speed db 13, 10, 'Ingrese velocidad (0-9)', 13, 10, '$'
-	
+		;msg_pedir_orden db 13, 10, 'Ingrese velocidad (0-9)' 13, 10, '$'
 	opcion db 80 dup('$')
 	my_flag db 0,0,0
 
 	name_user db 'usuarios.txt', 0
 	arch_puntos db 'puntos.txt', 0
 	arch_tiempo db 'tiempo.txt', 0
+
+	msg1 db 13,10,'Usuario administrador',13,10,'$'
+	msg2 db 13,10,'Simple mortal :v',13,10,'$'
 	
 	;variables auxiliares, cualquier uso
 	var_count db 0
@@ -87,6 +96,9 @@ dato segment
 
 	count_si dw 0
 	count_di dw 0 
+	
+	posicion_car db 0
+	posicion_car_aux db 4 
 
 	MENSAJE DB '0123456789$',13, 10,'1',13, 10,'2',13, 10,'3',13, 10,'4',13, 10,'5',13, 10,'6',13, 10,'7',13, 10,'8',13, 10,'9', 13, 10, '$'
 	;MENSAJE1 DB 'M','AYOR$'
@@ -97,28 +109,8 @@ dato segment
 	msg_quick DB  'QuickSort  TIME: 00:00  SPEED: 2$'
 	msg_bubble DB 'BubbleSort TIME: 00:00  SPEED: 2$'
 	
-	;Bloques
-	bloq1 db ?
-	bloq2 db ?
-	bloq3 db ?
-	bloq4 db ?
-	bloq5 db ?
-	bloq6 db ?
-	bloq7 db ?
-	bloq8 db ?
-	bloq9 db ?
-	bloq10 db ?
-	posjugador1 db ?
-	posjugador2 db ?
 
-	temnivel db 'N1','$'
-	teclaguard db ?
 	;variables para llevar conteos
-	pospelotax db ?
-	pospelotay db ?
-	dirperlotax db ?
-	dirperlotay db ?
-
 	var_password db 5 dup('$')
 	var_user db 'prueba$$', 8 dup('$')
 	;			0001234567
@@ -131,10 +123,10 @@ dato segment
 	time_bonus_aux dw 0
 	nivel_aux dw 0
 
+	m_nivel db 'Nivel 01$$$$'
 	m_puntos db '009$$$'
 	m_tiempo db '00:00$$$'
 	m_termina db 'JUEGO FINALIZADO$$'
-	quitarbloque db ?
 
 	array_nivel db 'patito$', 42 dup('$')
 	array_time_nivel dw 60, 7 dup('$')
@@ -152,6 +144,11 @@ dato segment
 	minutes_aux db 0
 	seconds_start db 0
 	minutes_start db 0
+
+	enemigo_x db 10 dup('$') 	; 0 - 2
+	enemigo_y db 10 dup('$')	; 3 - 23
+	bonus_x db 10 dup('$')	; 0 - 2
+	bonus_y db 10 dup('$')	; 3 - 23
 
 	points_aux db 7 dup('$')
 	m_puntos_8 db 10 dup('$')
@@ -178,14 +175,14 @@ dato ends
 
 ;------------------------------------------------------
 ;espacio para incluir las macros
-include mvar.asm
-include mcontrol.asm
-include mvideo.asm
-include mjuego.asm
-include mverj.asm
-include mnivel.asm
-include mlista.asm ;Area del administrador
-include mord.asm ;ordenamientos
+include file1.asm
+include file2.asm
+include file3.asm
+include file4.asm
+include file5.asm
+include file6.asm
+include file7.asm ;Area del administrador
+include file8.asm ;ordenamientos
 ;termina espacio de inclución
 ;------------------------------------------------------
 
@@ -197,8 +194,10 @@ codigo segment
 			leer_archivo name_user, cadena_super, my_flag, handle
 			cargar_usuarios_archivo cadena_super, numero_usuarios
 		Inicio_programa:
-			limpiar 0fh
+			limpiar 3fh
 			gotoxy 0,0
+			;jmp bloque_usuario
+			;jmp etiqueta_top_puntos
 			imprime ENCABEZADO
 			imprime MENU_INICIO
 			reiniciar_variable opcion, 0
@@ -209,6 +208,8 @@ codigo segment
 			je function_registrar
 			cmp opcion[0], '3'
 			je salir
+			;cmp opcion[0], '4'
+			;je pruebas
 			jmp Inicio_programa
 
 		;----------------------------------------------------
@@ -232,10 +233,20 @@ codigo segment
 				push dx
 				jmp ingresar_password
 
+			ingresa_usuario:
+				imprime msg2
+				pausa
+				jmp bloque_usuario
+
 			usuario_administrador:
 				mov dx, 1
 				push dx
 				jmp ingresar_password
+
+			ingresa_administrador:
+				imprime msg1
+				pausa
+				jmp bloque_administrador
 
 			ingresar_password:
 				reiniciar_variable var_password, 0
@@ -251,8 +262,8 @@ codigo segment
 			password_correcta:
 				pop dx
 				cmp dx, 0
-				je bloque_iniciar_juego
-				jmp bloque_administrador
+				je ingresa_usuario
+				jmp ingresa_administrador
 
 				;----------------------------------------------------
 				;area para el administrador
@@ -410,10 +421,50 @@ codigo segment
 
 				;----------------------------------------------------
 				;Ingresa el usuario
+					bloque_usuario:
+						limpiar 0fh
+						gotoxy 0,0
+						imprime ENCABEZADO
+						imprime MENU_USER
+
+						reiniciar_variable opcion, 0
+						leer_var opcion, 1
+						cmp opcion[0], '1'
+						je bloque_iniciar_juego
+						cmp opcion[0], '2'
+						je bloque_cargar_juego
+						cmp opcion[0], '3'
+						je return_start
+						jmp bloque_usuario
+
 					bloque_iniciar_juego:
 						iniciar_juego var_user
 						guardar_resultados_juego
-						jmp Inicio_programa
+						jmp bloque_usuario
+
+					bloque_cargar_juego:
+						limpiar 0fh
+						gotoxy 0, 0
+
+						reiniciar_variable ruta_archivo, 0
+						reiniciar_variable cadena_super, 0
+
+						imprime msg_pedir_path
+						leer_var ruta_archivo, 50
+						mov ruta_archivo[si], 0						
+						
+						leer_archivo ruta_archivo, cadena_super, my_flag, handle
+						cmp my_flag, 1
+						je e_error_no_existe
+						llenar_variables cadena_super, num_niveles
+						imprime msg_confirmacion_archivo
+						imprime cadena_super
+						pausa
+						jmp bloque_usuario
+					e_error_no_existe:
+						imprime msg_error_no_existe
+						pausa
+						jmp bloque_cargar_juego
 				;termina bloque usuario
 				;----------------------------------------------------
 			

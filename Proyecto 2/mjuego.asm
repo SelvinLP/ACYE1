@@ -1,92 +1,144 @@
-juego macro
-push_registros
-xor ax,ax
-xor bx,bx
-xor cx,cx
-xor si,si
-xor di,di ;contador del tiempo
-mov bloq1,2
-mov bloq2,9
-mov bloq3,16
-mov bloq4,23
-mov bloq5,30
-mov bloq6,2
-mov bloq7,9
-mov bloq8,16
-mov bloq9,23
-mov bloq10,30
-mov pospelotax,20
-mov pospelotay,20
-mov dirperlotax,1
-mov dirperlotay,0
-mov posjugador1 ,15
-mov posjugador2 ,20
-mov puntos,0
-mov tiempo,0
-Modografico
-pintar_bloque 22,posjugador1,22,posjugador2,15
-print temusuario,1,0,15
-print temnivel,13,0,15
-pintarborde
-
-jjinicio:
-	;Encabezado
-	mov cl, puntos
-	mov ax, cx
-	ConvertirString tempuntos
+iniciar_juego macro usuario
+	local continue_, ver_nivel, siguiente_loop, my_loop
+	local juego_finaliza, out_text
+	
+	modo_grafico
+	;-------operaciones iniciales---------------
+	xor bx,bx
 	xor cx,cx
-	mov cl, tiempo
-	mov ax, cx
-	ConvertirString temtiempo
-	print tempuntos,24,0,15
-	print temtiempo,36,0,15
-	;movimientos
-	bloquespuntos
-	mov teclaguard,4
-    mvpelota 
-	cmp teclaguard, 3	;Salida en caso de que pierda
-		je jsalida
-	;guarda si se presiona una tecla
-    mov ah, 01h
-    int 16h
-    jnz Obtenerv 
-    jmp jsinicio
-Obtenerv:
-    obtener_direccion teclaguard
-	cmp teclaguard, 3
-		je jsalida
-	cmp teclaguard, 0
-		je mvjugadorpintar
-	cmp teclaguard, 1
-		je mvjugadorpintar
-    jmp jsinicio
-mvjugadorpintar:
-	mvjugador
-	jmp jsinicio
-jsinicio:
-    Delay 400
-	add di,1
-	cmp di,10
-		je inctiempo
-	jmp jjinicio
-inctiempo:
-	xor di,di
-	inc tiempo
-	jmp jjinicio
-jsalida:
-;guardamos valores en array
-Modotexto
-xor ax,ax
-mov al, tiempo
-guardartimeopuntos usuytiempo, ax
-imprimir usuytiempo
-imprimirchar 10
-xor ax,ax
-mov al, puntos
-guardartimeopuntos usuypuntos, ax
-imprimir usuypuntos
-pop_registros
+	xor si,si
+	xor di,di ;contador del tiempo
+	mov bloq1,2
+	mov bloq2,9
+	mov bloq3,16
+	mov bloq4,23
+	mov bloq5,30
+	mov bloq6,2
+	mov bloq7,9
+	mov bloq8,16
+	mov bloq9,23
+	mov bloq10,30
+	mov pospelotax,20
+	mov pospelotay,20
+	mov dirperlotax,1
+	mov dirperlotay,0
+	mov posjugador1 ,15
+	mov posjugador2 ,20
+	mov teclaguard,3
+
+	reiniciar_variable points_aux, 0
+	mov indice_nivel, 0 ;manejador de los indices del nivel
+	mov indice_nivelb, 0
+	mov var_tiempo, 0 ;contador de segundos
+	mov nivel_aux, 0
+	mov var_puntos, 3
+	mov my_flag, 0
+	mov tiempo_pausa, 0
+	mov m_puntos[0], '0'
+	mov m_puntos[1], '0'
+	mov m_puntos[2], '0'
+
+	pintar_bloque 22,posjugador1,22,posjugador2,15
+	print usuario, 0, 0, 14	
+	print temnivel,13,0,15
+	print m_puntos, 26, 0, 14
+	convertir_tiempo var_tiempo, m_tiempo
+	print m_tiempo, 35, 0, 14
+	pintarborde
+	;--------------------------------------------			
+		
+	mov ah, 10h
+	int 16h ;Presionar tecla para empezar
+	;tomar tiempo
+		mov ah, 2ch ;obtener tiempo inicial
+		int 21h ;CH = hour; CL = minute; DH = second; DL = 1/100 second
+		
+		mov seconds_start, dh 
+		mov minutes_start, cl	
+	;fin tomar tiempo
+		jmp ciclo_j
+
+	ciclo_j:
+	;tiempo, min_inico, sec_inicio, time_pausa
+	;-----tiempo---------
+		obtener_tiempo var_tiempo, minutes_start, seconds_start, tiempo_pausa
+		convertir_tiempo var_tiempo, m_tiempo
+		print m_tiempo, 35, 0, 14	
+	;-----fin tiempo-----		
+		
+	;Se presonó tecla?
+		mov ah, 01h
+		int 16h
+		jz continue_ ;no se presiona vamos a continue
+		mvjugador
+		cmp teclaguard, 4	;salida
+			je juego_finaliza
+		jmp continue_
+	continue_:
+		convertir_16bits points_aux, var_puntos
+		;movzx dx, array_x[3]
+		;convertir_16bits points_aux, dx
+		;convertir_16bits points_aux, array_time_nivel[di]
+		;convertir_16bits points_aux, num_niveles
+		mov al, points_aux[5]
+		mov m_puntos[2], al
+		mov al, points_aux[4]
+		mov m_puntos[1], al
+		mov al, points_aux[3]
+		mov m_puntos[0], al
+		print m_puntos, 26, 0, 14	
+		bloquespuntos
+		mvpelota
+		cmp teclaguard, 4	;salida
+			je juego_finaliza
+		jmp jsinicio
+
+	jsinicio:
+		delay_juego 400
+		jmp ciclo_j
+
+	juego_finaliza:
+	out_text:			
+		mov ah, 10h
+		int 16h
+		modo_texto
 endm
+
+pintarborde macro 
+local bordeA, bordeI, bordeB, bordeD, bordesalida
+push cx
+mov cx, 5
+bordeA:
+	pixel cx,10,15
+	inc cx
+	cmp cx, 315
+		jne bordeA
+	mov cx,10
+	jmp bordeI
+bordeI:
+	pixel 5,cx,15
+	inc cx
+	cmp cx, 195
+		jne bordeI
+	mov cx,5
+	jmp bordeB
+bordeB:
+	pixel cx,195,15
+	inc cx
+	cmp cx, 315
+		jne bordeB
+	mov cx,10
+	jmp bordeD
+bordeD:
+	pixel 315,cx,15
+	inc cx
+	cmp cx, 195
+		jne bordeD
+	jmp bordesalida
+bordesalida:
+pop cx
+endm
+
 
 bloquespuntos macro
 	cmp bloq1,0
@@ -141,28 +193,6 @@ pintarblqq10:
 blsalirp:
 endm
 
-mvjugador macro
-mvjinicio:
-	pintar_bloque 22,posjugador1,22,posjugador2,0
-	cmp teclaguard, 1	;izq
-		je movizq
-	cmp teclaguard, 0	;der
-		je movder
-movizq:
-	cmp posjugador1, 1
-		je mvjsalir
-	sub posjugador1, 2
-	sub posjugador2, 2
-	jmp mvjsalir
-movder:
-	cmp posjugador2, 38
-		je mvjsalir
-	add posjugador1, 2
-	add posjugador2, 2
-	jmp mvjsalir
-mvjsalir:
-	pintar_bloque 22,posjugador1,22,posjugador2,15
-endm
 
 mvpelota macro
 pintar_bloque pospelotay,pospelotax,pospelotay,pospelotax,0
@@ -237,7 +267,7 @@ decy:
     sub pospelotay, 1
     jmp mvsalir
 mvjperdio:
-	mov teclaguard, 3
+	mov teclaguard, 4
 	jmp mvsalir
 mvvjug:
 	mov al, posjugador1
@@ -254,6 +284,7 @@ pintar_bloque pospelotay,pospelotax,pospelotay,pospelotax,15
 endm
 
 validbloqpelota macro
+push ax
 mov quitarbloque, 0
 vlbp6:
 	cmp bloq6,0
@@ -269,7 +300,7 @@ vl6:
 	pintar_bloque 5,2,5,7,0
 	mov bloq6,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida
 vlbp7:
 	cmp bloq7,0
@@ -285,7 +316,7 @@ vl7:
 	pintar_bloque 5,9,5,14,0
 	mov bloq7,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida
 vlbp8:
 	cmp bloq8,0
@@ -301,7 +332,7 @@ vl8:
 	pintar_bloque 5,16,5,21,0
 	mov bloq8,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida
 vlbp9:
 	cmp bloq9,0
@@ -317,7 +348,7 @@ vl9:
 	pintar_bloque 5,23,5,28,0
 	mov bloq9,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida
 vlbp10:
 	cmp bloq10,0
@@ -333,9 +364,10 @@ vl10:
 	pintar_bloque 5,30,5,35,0
 	mov bloq10,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida
 vlbpsalida:
+pop ax
 endm
 
 validbloqpelota2 macro
@@ -354,7 +386,7 @@ vl1:
 	pintar_bloque 3,2,3,7,0
 	mov bloq1,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida2
 vlbp2:
 	cmp bloq2,0
@@ -370,7 +402,7 @@ vl2:
 	pintar_bloque 3,9,3,14,0
 	mov bloq2,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida2
 vlbp3:
 	cmp bloq3,0
@@ -386,7 +418,7 @@ vl3:
 	pintar_bloque 3,16,3,21,0
 	mov bloq3,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida2
 vlbp4:
 	cmp bloq4,0
@@ -402,7 +434,7 @@ vl4:
 	pintar_bloque 3,23,3,28,0
 	mov bloq4,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida2
 vlbp5:
 	cmp bloq5,0
@@ -418,244 +450,7 @@ vl5:
 	pintar_bloque 3,30,3,35,0
 	mov bloq5,0 
 	mov quitarbloque, 1
-	add puntos,5
+	add var_puntos,5
 	jmp vlbpsalida2
 vlbpsalida2:
-endm
-
-pintar_bloque macro line_i, col_i, line_f, col_f, color
-	push_registros
-
-	mov bh, color	;color
-	mov ch, line_i	;comienzo linea
-	mov cl, col_i	;comienzo Columna
-	mov dh, line_f	;fin de linea
-	mov dl, col_f	;fin de Columna
-	mov ah, 06h
-	mov al, 0
-	int 10h
-
-	pop_registros
-endm
-
-Modografico macro 
-    ;Modo video
-	push_registros
-    mov ax, 0013h
-    int 10h
-	pop_registros
-endm
-
-Modotexto macro
-	push_registros
-	mov ax, 0003h
-	int 10h
-	;mov ax, @data
-	;mov ds, ax
-	pop_registros
-endm
-
-push_registros macro
-	push ax
-	push bx
-	push cx
-	push dx
-	push si
-	push di
-endm
-
-pop_registros macro
-	pop di
-	pop si
-	pop dx
-	pop cx
-	pop bx
-	pop ax
-endm
-
-limpiarpantalla macro 
-    mov ax, 0013h
-	int 10h
-	mov ah,0Bh 					 
-	mov bh,00h 					 
-	mov bl,00h 					 
-    int 10h    					 
-endm
-
-pixel macro x0, y0, color
-	push_registros
-	mov ah, 0ch
-	mov al, color
-	mov bh, 00h
-	mov dx, y0
-	mov cx, x0
-	int 10h
-	pop_registros
-endm
-
-print macro char, x, y, color
-	local loop_print, fin_print
-	push_registros
-
-	mov di, 0
-	mov dl, x
-	mov dh, y
-
-	loop_print:
-		mov ah, 02h
-		mov bh, 0
-		int 10h
-		cmp char[di], '$'	;verificamos el fin de cadena
-		je fin_print	;si es igual terminamos
-		MOV AH,09H		;imprimir en pantalla
-		MOV AL, char[di]	;caracter (solo 1 y solo así se puede) a imprimir
-		MOV BH,0	;opciones (no se cuales hay xd)
-		MOV BL,color 
-		MOV CX,1	;numero de repeticiones del mismo caracter
-		INT 10H 	;interrupcion y se imprime
-		inc di 		;continuamos en la cadena
-		inc dl		;para posicionar el cursor
-		jmp loop_print 
-
-	fin_print:
-		pop_registros				
-endm
-
-obtener_direccion macro left
-	local RASTREA, derecha, izquierda, SAL1, SAL2, SAL3
-	local colocar_pausa
-	push_registros
-		MOV AH,10h 	;leer teclado expandido los que no estan en ascii
-    	INT 16H
-    	CMP AL,00H 	;coidgo de rastreo, si es diferente es un asccii
-    	JE RASTREA        
-    	CMP AL,0E0H ;en algunas pc es este y no el de arrib xd
-    	je RASTREA        
-    
-    JMP SAL2 	;es un asccii
-    RASTREA:  
-        cmp ah, 04bh
-        je izquierda
-        cmp ah, 04dh
-        je derecha      	
-        jmp SAL3	;no es ninguna Flecha
-
-    derecha: 
- 		mov left, 0
-		jmp SAL1
-	izquierda: 
- 		mov left, 1
-		jmp SAL1
-
-	colocar_pausa:
-		mov ah, 10h
-        int 16h
-		cmp al, 27
-			je SAL3
-		jmp SAL1
-	SAL2:
-		cmp al, 32
-		    je colocar_pausa
-		cmp al, 27
-		    je SAL3
-		jmp SAL1
-	SAL3:
-		mov left, 3
-	SAL1:
-	pop_registros
-endm
-
-pintarborde macro 
-local bordeA, bordeI, bordeB, bordeD, bordesalida
-push cx
-mov cx, 5
-bordeA:
-	pixel cx,10,15
-	inc cx
-	cmp cx, 315
-		jne bordeA
-	mov cx,10
-	jmp bordeI
-bordeI:
-	pixel 5,cx,15
-	inc cx
-	cmp cx, 195
-		jne bordeI
-	mov cx,5
-	jmp bordeB
-bordeB:
-	pixel cx,195,15
-	inc cx
-	cmp cx, 315
-		jne bordeB
-	mov cx,10
-	jmp bordeD
-bordeD:
-	pixel 315,cx,15
-	inc cx
-	cmp cx, 195
-		jne bordeD
-	jmp bordesalida
-bordesalida:
-pop cx
-endm
-
-guardartimeopuntos macro arr, valor
-local gtinicio, gtinsertusu, gtcambio, guardato, gtsalir
-Limpiararr arrtem
-xor si,si
-xor cx,cx
-xor dx,dx
-gtinicio:
-	push si
-    mov si,cx
-    mov dh, arr[si]
-    pop si
-    cmp dh, 36 ;Valida $
-        je gtinsertusu
-    inc cx
-    jmp gtinicio
-gtinsertusu:
-	mov dh, temusuario[si]
-    cmp dh, 36
-        je gtcambio
-    push si
-    mov si,cx
-    mov arr[si],dh
-    inc cx
-    pop si
-    inc si
-    jmp gtinsertusu
-gtcambio:
-	xor si,si
-    push si
-    mov si,cx
-    mov arr[si],58
-    inc cx
-    pop si
-	;pasamos el valor a un array
-	mov ax, valor
-	push cx
-	ConvertirString arrtem
-	pop cx
-    jmp guardato
-guardato:
-	mov dh, arrtem[si]
-    cmp dh, 36
-        je gtsalir
-    push si
-    mov si,cx
-    mov arr[si],dh
-    inc cx
-    pop si
-    inc si
-    jmp guardato
-gtsalir:
-    xor si,si
-    push si
-    mov si,cx
-    mov arr[si],59
-    inc cx
-    pop si
-
 endm
